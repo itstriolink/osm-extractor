@@ -31,7 +31,7 @@
             </resource>
         </resources>
         <testSourceDirectory>tests/src</testSourceDirectory>
-        <outputDirectory>module/MOD-INF/classes</outputDirectory>
+        <outputDirectory>../../module/MOD-INF/classes</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
