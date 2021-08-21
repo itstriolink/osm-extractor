@@ -1,0 +1,45 @@
+image: maven:latest
+
+stages:
+  - build
+  - test
+  - release
+
+build:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - echo "Building extension"
+    - mvn -B clean compile
+    - mvn -B assembly:single
+  artifacts:
+    paths:
+      - target/*.{zip,tgz}
+    expire_in: never
+
+test:
+  stage: test
+  script:
+    - mvn -B clean test
+
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - echo 'running release job'
+  release:
+    name: 'Release $CI_COMMIT_TAG'
+    description: 'Release $CI_COMMIT_TAG - Created automatically using the Gitlab CI/CD Pipeline'
+    tag_name: '$CI_COMMIT_TAG'
+    ref: '$CI_COMMIT_SHA'
+    assets:
+      links:
+        - name: 'geojson-$CI_COMMIT_TAG.zip'
+          url: 'https://gitlab.com/labiangashi/osm-extractor/-/jobs/artifacts/$CI_COMMIT_TAG/raw/target/osm-extractor-$CI_COMMIT_TAG.zip?job=build'
+        - name: 'geojson-$CI_COMMIT_TAG.tgz'
+          url: 'https://gitlab.com/labiangashi/osm-extractor/-/jobs/artifacts/$CI_COMMIT_TAG/raw/target/osm-extractor-$CI_COMMIT_TAG.tgz?job=build'
+
+

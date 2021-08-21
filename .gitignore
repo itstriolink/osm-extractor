@@ -1,6 +1,6 @@
 target/
-module/MOD-INF/classes/
-module/MOD-INF/lib/
+src/main/resources/module/MOD-INF/classes/
+src/main/resources/module/MOD-INF/lib/
 .idea
 
 *.class

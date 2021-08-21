@@ -1,0 +1,84 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2021 Labian Gashi
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+@import-less url("./theme.less");
+
+.raw-query-code {
+  width: 100%;
+  border: 1px solid @chrome_primary;
+  height: 25em;
+  padding: @padding_tighter;
+  resize: vertical;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#osm-extractor-tabs {
+  .ui-tabs-panel {
+    padding: @padding_looser;
+  }
+
+  select {
+    padding: @padding_tighter;
+    font-size: 1em;
+    width: 250px;
+    font-family: inherit;
+    border: #ccc 1px solid;
+    border-top: #888 1px solid;
+    vertical-align: baseline;
+  }
+}
+
+.osm-extractor-dialog-row {
+  margin-top: 2px;
+  padding-top: 2px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+
+  td {
+    padding: 3px;
+    margin: 3px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+  }
+}
+
+.column-list-container {
+  height: 25em;
+  border: 1px solid @chrome_primary;
+  padding: @padding_tighter;
+  overflow-y: auto;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+
+  .osm-extractor-columns {
+    border: 1px solid @chrome_primary;
+    padding: @padding_loose;
+    border-radius: 4px;
+  }
+}
