@@ -7,10 +7,10 @@ OpenRefine extension that allows you to import OpenStreetMap data into OpenRefin
 Installation
 ------
 * Download the latest release of the extension from _Deployments -> Releases_ as an archived folder (.zip or .tgz)
+* Unzip the folder into OpenRefine's installation folder, for more information on how to do that, visit OpenRefine's official documentation
 
 Usage
------
-* Unzip the folder into OpenRefine's installation folder, for more information on how to do that, visit OpenRefine's [official documentation](https://docs.openrefine.org/manual/installing#installing-extensions)
+------
 * Launch OpenRefine
 * Select _OpenStreetMap (Overpass)_ from the import sources
 * Select the Overpass API instance
