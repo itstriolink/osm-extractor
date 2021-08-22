@@ -31,20 +31,20 @@
 
     <repositories>
         <repository>
+            <id>maven-repository</id>
+            <url>file:///${project.basedir}/project-repository</url>
+        </repository>
+        <repository>
             <id>osm4j</id>
-            <url>https://mvn.topobyte.de</url>
+            <url>https://mvn.topobyte.de/</url>
         </repository>
         <repository>
             <id>slimjars</id>
-            <url>https://mvn.slimjars.com</url>
+            <url>https://mvn.slimjars.com/</url>
         </repository>
         <repository>
             <id>central</id>
             <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>maven-repository</id>
-            <url>file:///${project.basedir}/project-repository</url>
         </repository>
     </repositories>
 
