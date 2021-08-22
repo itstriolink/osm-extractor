@@ -475,7 +475,7 @@ public class OSMDataImportingController implements ImportingController {
                             } else if (pointsAsLatLon && columnName.equals(Constants.Importing.LONGITUDE_COLUMN_NAME)) {
                                 value = String.valueOf(longitude);
                             } else if (pointsDelimited && columnName.equals(Constants.Importing.POINT_DELIMITED_COLUMN_NAME)) {
-                                value = String.format("%f%s%f", latitude, pointsSeparator, (longitude));
+                                value = String.format("%f%s%f", longitude, pointsSeparator, latitude);
                             } else if (pointsAsWKT && columnName.equals(Constants.Importing.WKT_COLUMN_NAME)) {
                                 value = osmExtractor.getWKTRepresentation(point);
                             } else if (originalTagName != null) {

@@ -19,7 +19,7 @@
   "osm-extractor/relations": "Relations",
   "osm-extractor/points": "Points",
   "osm-extractor/points-lat-lon": "As lat/long columns",
-  "osm-extractor/points-delimited": "As delimited text with separator:&nbsp;",
+  "osm-extractor/points-delimited": "As delimited text (LonLat) with separator:&nbsp;",
   "osm-extractor/points-wkt": "As WKT",
   "osm-extractor/lines-wkt": "LineStrings as WKT",
   "osm-extractor/multi-lines-wkt": "MultiLineStrings as WKT",
