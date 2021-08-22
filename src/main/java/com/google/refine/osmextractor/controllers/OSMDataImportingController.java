@@ -405,8 +405,8 @@ public class OSMDataImportingController implements ImportingController {
 
                 if (includePoints) {
                     if (pointsAsLatLon) {
-                        createColumn(project, Constants.Importing.LATITUDE_COLUMN_NAME, Constants.Importing.GENERATED_COLUMN_DESCRIPTION);
                         createColumn(project, Constants.Importing.LONGITUDE_COLUMN_NAME, Constants.Importing.GENERATED_COLUMN_DESCRIPTION);
+                        createColumn(project, Constants.Importing.LATITUDE_COLUMN_NAME, Constants.Importing.GENERATED_COLUMN_DESCRIPTION);
                     }
 
                     if (pointsDelimited) {
