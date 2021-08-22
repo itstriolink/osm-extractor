@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.google.refine</groupId>
-    <artifactId>osm-extractor</artifactId>
+    <artifactId>geojson-export</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>OpenRefine - OSM Extractor extension</name>
-    <description>OpenRefine extension that uses the Overpass API to extract OpenStreetMap data</description>
-    <url>https://gitlab.com/labiangashi/osm-extractor</url>
+    <name>OpenRefine - GeoJSON Export Extension</name>
+    <description>GeoJSON export for OpenRefine</description>
+    <url>https://gitlab.com/labiangashi/geojson-export</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -34,14 +34,6 @@
             <id>maven-repository</id>
             <url>file:///${project.basedir}/project-repository</url>
         </repository>
-        <repository>
-            <id>topobyte</id>
-            <url>https://mvn.topobyte.de</url>
-        </repository>
-        <repository>
-            <id>slimjars</id>
-            <url>https://mvn.slimjars.com</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -60,6 +52,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>1.18.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
@@ -67,20 +65,9 @@
         </dependency>
 
         <dependency>
-            <groupId>de.topobyte</groupId>
-            <artifactId>osm4j-core</artifactId>
-            <version>1.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>de.topobyte</groupId>
-            <artifactId>osm4j-xml</artifactId>
-            <version>1.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.topobyte</groupId>
-            <artifactId>osm4j-geometry</artifactId>
-            <version>1.2.0</version>
+            <groupId>org.wololo</groupId>
+            <artifactId>jts2geojson</artifactId>
+            <version>0.16.1</version>
         </dependency>
 
         <dependency>
@@ -122,16 +109,6 @@
             <artifactId>testng</artifactId>
             <version>7.4.0</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.12.3</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
         </dependency>
     </dependencies>
 
