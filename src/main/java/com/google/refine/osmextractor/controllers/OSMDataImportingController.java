@@ -461,8 +461,8 @@ public class OSMDataImportingController implements ImportingController {
                         Row row = new Row(project.columnModel.getMaxCellIndex());
                         Map<String, String> currentTags = element.getTags();
 
-                        double latitude = point.getX();
-                        double longitude = point.getY();
+                        double longitude = point.getX();
+                        double latitude = point.getY();
 
                         for (Column column : project.columnModel.columns) {
                             String columnName = column.getName();
