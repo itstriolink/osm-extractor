@@ -34,6 +34,14 @@
             <id>maven-repository</id>
             <url>file:///${project.basedir}/project-repository</url>
         </repository>
+        <repository>
+            <id>topobyte</id>
+            <url>https://mvn.topobyte.de</url>
+        </repository>
+        <repository>
+            <id>slimjars</id>
+            <url>https://mvn.slimjars.com</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -58,22 +66,22 @@
             <scope>provided</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>de.topobyte</groupId>-->
-<!--            <artifactId>osm4j-core</artifactId>-->
-<!--            <version>1.2.0</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>de.topobyte</groupId>-->
-<!--            <artifactId>osm4j-xml</artifactId>-->
-<!--            <version>1.2.0</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>de.topobyte</groupId>
+            <artifactId>osm4j-core</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>de.topobyte</groupId>
+            <artifactId>osm4j-xml</artifactId>
+            <version>1.2.0</version>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>de.topobyte</groupId>-->
-<!--            <artifactId>osm4j-geometry</artifactId>-->
-<!--            <version>1.2.0</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>de.topobyte</groupId>
+            <artifactId>osm4j-geometry</artifactId>
+            <version>1.2.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -114,6 +122,16 @@
             <artifactId>testng</artifactId>
             <version>7.4.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
         </dependency>
     </dependencies>
 
