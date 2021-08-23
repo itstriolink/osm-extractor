@@ -6,7 +6,7 @@ OpenRefine extension that allows you to import OpenStreetMap data into OpenRefin
 
 Installation
 ------
-* Download the latest release of the extension from _Deployments -> Releases_ as an archived folder (.zip or .tgz)
+* Download the latest release of the extension from project [releases](https://gitlab.com/labiangashi/osm-extractor/-/releases) as an archived folder (.zip or .tgz)
 * Unzip the folder into OpenRefine's installation folder, for more information on how to do that, visit OpenRefine's official documentation
 
 Usage
