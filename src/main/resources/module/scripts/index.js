@@ -116,6 +116,8 @@ Refine.OSMImportingController.prototype._showParsingPanel = function () {
     this._parsingPanelElmts.multiPolygonsLabel.html($.i18n('osm-extractor/multi-polygons-wkt'));
 
     this._parsingPanelElmts.loadingMessage.html($.i18n('osm-extractor/loading-message'));
+    this._parsingPanelElmts.abortButton.html($.i18n('osm-extractor/abort-label'));
+
 
     if (this._parsingPanelResizer) {
         $(window).unbind('resize', this._parsingPanelResizer);
@@ -169,13 +171,7 @@ Refine.OSMImportingController.prototype._showParsingPanel = function () {
     });
 
     this._parsingPanelElmts.startOverButton.click(function () {
-        Refine.CreateProjectUI.cancelImportingJob(self._jobID);
-
-        delete self._doc;
-        delete self._jobID;
-        delete self._options;
-
-        self._createProjectUI.showSourceSelectionPanel();
+        self._sendToInitialPage();
     });
     this._parsingPanelElmts.createProjectButton.click(function () {
         self._createProject();
@@ -195,9 +191,18 @@ Refine.OSMImportingController.prototype._updatePreview = function () {
     self._parsingPanelElmts.progressPanel.show();
     self._parsingPanelElmts.createProjectButton.addClass("button-disabled").prop("disabled", true);
 
+    var xhr;
+    this._parsingPanelElmts.abortButton.click(function () {
+        if(xhr) {
+            xhr.abort();
+
+            self._sendToInitialPage();
+            alert("The request to the Overpass API has been cancelled")
+        }
+    });
 
     Refine.wrapCSRF(function (token) {
-        $.post(
+        xhr = $.post(
             "command/core/importing-controller?" + $.param({
                 "controller": "osm-extractor/osm-data-importing-controller",
                 "jobID": self._jobID,
@@ -258,7 +263,7 @@ Refine.OSMImportingController.prototype._updatePreview = function () {
                             $('<input>')
                                 .attr('type', 'checkbox')
                                 .attr("id", "tagCheckbox-" + i)
-                                .prop("checked", i == 0 ? true : false)
+                                .prop("checked", ["Identifier", "Metadata", "Main"].indexOf(type) >= 0)
                                 .attr("class", "includeTagCheckbox")
                                 .attr("rowIndex", i)
                                 .appendTo(tagNameDiv);
@@ -276,7 +281,7 @@ Refine.OSMImportingController.prototype._updatePreview = function () {
                             $('<input>')
                                 .attr('type', 'text')
                                 .attr("class", "newColumnName")
-                                .attr("disabled", i > 0 ? true : false)
+                                .attr("disabled", ["Identifier", "Metadata", "Main"].indexOf(type) === -1)
                                 .attr("rowIndex", i)
                                 .val(name)
                                 .appendTo(newColumnNameDiv);
@@ -422,10 +427,19 @@ Refine.OSMImportingController.prototype._createProject = function () {
 }
 
 Refine.OSMImportingController.prototype._getOptions = function () {
-    var options = {
-        // docUrl: this._doc.docSelfLink,
-        // docType: this._doc.type,
-    };
+    var options = { };
 
     return options;
 };
+
+Refine.OSMImportingController.prototype._sendToInitialPage = function () {
+    var self = this;
+
+    Refine.CreateProjectUI.cancelImportingJob(self._jobID);
+
+    delete self._doc;
+    delete self._jobID;
+    delete self._options;
+
+    self._createProjectUI.showSourceSelectionPanel();
+}

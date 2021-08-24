@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 public class Util {
     public static boolean isValidOverpassQuery(String query) {
-        return !query.contains("[out:json]");
+        return !query.contains("[out:json]") && !query.contains("out:csv");
     }
 
     public static boolean overpassQueryContainsMetadata(String query) {

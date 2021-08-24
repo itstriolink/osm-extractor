@@ -8,6 +8,7 @@
   "osm-extractor/configure-mapping": "Configure Mapping Options",
   "osm-extractor/create-project": "Create Project &raquo;",
   "osm-extractor/loading-message": "Loading...",
+  "osm-extractor/abort-label": "Abort",
   "osm-extractor/project-name": "Project&nbsp;name",
   "osm-extractor/statistics-label": "Stats:&nbsp;",
   "osm-extractor/settings-label": "Settings",

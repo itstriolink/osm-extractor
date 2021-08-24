@@ -135,7 +135,7 @@ public class OSMExtractor {
     }
 
     public void addMultiLineString(MultiLineString multiLineString, long id, Map<String, String> tags, OsmMetadata metadata) {
-        this.lineStrings.add(new OSMElement(multiLineString, id, tags, metadata));
+        this.multiLineStrings.add(new OSMElement(multiLineString, id, tags, metadata));
     }
 
     public void addMultiPolygon(MultiPolygon multiPolygon, long id, Map<String, String> tags, OsmMetadata metadata) {

@@ -146,7 +146,7 @@ public class OSMDataImportingController implements ImportingController {
             return;
         }
         if (!Util.isValidOverpassQuery(overpassQuery)) {
-            HttpUtilities.respond(response, "error", " \"[out:json]\" command is not allowed in the Overpass QL query.");
+            HttpUtilities.respond(response, "error", " \"[out:json]\" and \"[out:csv]\" commands are not allowed in the Overpass QL query.");
             return;
         }
 
@@ -180,7 +180,6 @@ public class OSMDataImportingController implements ImportingController {
 
             String encodedQuery = URLEncoder.encode(osmExtractor.getOverpassQuery(), "UTF-8");
             String query = osmExtractor.getOverpassInstance() + "?data=" + encodedQuery;
-            boolean isOutCenter = osmExtractor.getIsCenter();
 
             InputStream input = new URL(query).openStream();
             OsmReader reader = new OsmXmlReader(input, true);
@@ -323,6 +322,7 @@ public class OSMDataImportingController implements ImportingController {
                 tagNode.put("type", "Identifier");
                 JSONUtilities.append(tagsNode, tagNode);
             }
+
             if(includeMetadata) {
                 for(String metadataTag : metadataTags) {
                     ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
