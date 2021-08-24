@@ -23,48 +23,18 @@
  *
  */
 
-package com.google.refine.osmextractor.extractor;
+package com.labiangashi.refine.osmextractor.commands;
 
-import de.topobyte.osm4j.core.model.iface.OsmMetadata;
-import org.locationtech.jts.geom.Geometry;
+import com.google.refine.commands.Command;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-public class OSMElement {
-
-    private Geometry geometry;
-    private long id;
-    private Map<String, String> tags;
-    private OsmMetadata metadata;
-
-    public OSMElement(Geometry geometry, long id, Map<String, String> tags, OsmMetadata metadata) {
-        this.geometry = geometry;
-        this.id = id;
-        this.tags = tags;
-        this.metadata = metadata;
-    }
-
-    public Map<String, String> getTags() {
-        return tags;
-    }
-
-    public void setTags(Map<String, String> tags) {
-        this.tags = tags;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public OsmMetadata getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(OsmMetadata metadata) {
-        this.metadata = metadata;
-    }
-
-    public Geometry getGeometry() {
-        return geometry;
+public class PreviousQueriesCommand extends Command {
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        respondJSON(response, null);
     }
 }

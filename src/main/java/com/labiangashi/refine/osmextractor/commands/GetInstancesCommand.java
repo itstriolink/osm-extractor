@@ -23,11 +23,11 @@
  *
  */
 
-package com.google.refine.osmextractor.commands;
+package com.labiangashi.refine.osmextractor.commands;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.refine.commands.Command;
-import com.google.refine.osmextractor.util.Constants;
+import com.labiangashi.refine.osmextractor.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

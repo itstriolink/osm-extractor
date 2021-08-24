@@ -35,8 +35,8 @@ var logger = Packages.org.slf4j.LoggerFactory.getLogger("osm-extractor");
 function registerCommands() {
     logger.trace("Initializing OSM Extractor commands...");
     var RefineServlet = Packages.com.google.refine.RefineServlet;
-    RefineServlet.registerCommand(module, "get-overpass-instances", new Packages.com.google.refine.osmextractor.commands.GetInstancesCommand());
-    RefineServlet.registerCommand(module, "add-osm-data-to-project", new Packages.com.google.refine.osmextractor.commands.AddOSMDataToProjectCommand());
+    RefineServlet.registerCommand(module, "get-overpass-instances", new Packages.com.labiangashi.refine.osmextractor.commands.GetInstancesCommand());
+    RefineServlet.registerCommand(module, "add-osm-data-to-project", new Packages.com.labiangashi.refine.osmextractor.commands.AddOSMDataToProjectCommand());
     logger.trace("Finished initializing OSM Extractor commands.");
 }
 
@@ -46,7 +46,7 @@ function registerControllers() {
     IM.registerController(
         module,
         "osm-data-importing-controller",
-        new Packages.com.google.refine.osmextractor.controllers.OSMDataImportingController()
+        new Packages.com.labiangashi.refine.osmextractor.controllers.OSMDataImportingController()
     );
 }
 

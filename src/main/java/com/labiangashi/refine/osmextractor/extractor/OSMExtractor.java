@@ -23,7 +23,7 @@
  *
  */
 
-package com.google.refine.osmextractor.extractor;
+package com.labiangashi.refine.osmextractor.extractor;
 
 import de.topobyte.osm4j.core.access.OsmInputException;
 import de.topobyte.osm4j.core.access.OsmReader;

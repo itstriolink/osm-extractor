@@ -23,7 +23,7 @@
  *
  */
 
-package com.google.refine.osmextractor.operations;
+package com.labiangashi.refine.osmextractor.operations;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

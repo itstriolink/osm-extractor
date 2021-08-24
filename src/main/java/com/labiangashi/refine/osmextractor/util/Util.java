@@ -23,7 +23,7 @@
  *
  */
 
-package com.google.refine.osmextractor.util;
+package com.labiangashi.refine.osmextractor.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -23,7 +23,7 @@
  *
  */
 
-package com.google.refine.osmextractor.controllers;
+package com.labiangashi.refine.osmextractor.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -36,11 +36,11 @@ import com.google.refine.importing.ImportingController;
 import com.google.refine.importing.ImportingJob;
 import com.google.refine.importing.ImportingManager;
 import com.google.refine.model.*;
-import com.google.refine.osmextractor.extractor.OSMElement;
-import com.google.refine.osmextractor.extractor.OSMExtractor;
-import com.google.refine.osmextractor.util.Constants;
-import com.google.refine.osmextractor.util.OSMTags;
-import com.google.refine.osmextractor.util.Util;
+import com.labiangashi.refine.osmextractor.extractor.OSMElement;
+import com.labiangashi.refine.osmextractor.extractor.OSMExtractor;
+import com.labiangashi.refine.osmextractor.util.Constants;
+import com.labiangashi.refine.osmextractor.util.OSMTags;
+import com.labiangashi.refine.osmextractor.util.Util;
 import com.google.refine.util.JSONUtilities;
 import com.google.refine.util.ParsingUtilities;
 import de.topobyte.osm4j.core.access.OsmInputException;

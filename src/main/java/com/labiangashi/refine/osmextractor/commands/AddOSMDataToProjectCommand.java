@@ -23,13 +23,13 @@
  *
  */
 
-package com.google.refine.osmextractor.commands;
+package com.labiangashi.refine.osmextractor.commands;
 
 import com.google.refine.browsing.EngineConfig;
 import com.google.refine.commands.EngineDependentCommand;
 import com.google.refine.model.AbstractOperation;
 import com.google.refine.model.Project;
-import com.google.refine.osmextractor.operations.AddOSMDataToProjectOperation;
+import com.labiangashi.refine.osmextractor.operations.AddOSMDataToProjectOperation;
 
 import javax.servlet.http.HttpServletRequest;
 
