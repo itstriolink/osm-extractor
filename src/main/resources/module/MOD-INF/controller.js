@@ -40,7 +40,17 @@ function registerCommands() {
     logger.trace("Finished initializing OSM Extractor commands.");
 }
 
+function registerFunctions() {
+    logger.trace("Initializing OSM Extractor functions...");
+    Packages.com.google.refine.grel.ControlFunctionRegistry.registerFunction(
+        "interiorPoint",
+        new Packages.com.labiangashi.refine.osmextractor.functions.InteriorPoint()
+    );
+    logger.trace("Finished initializing OSM Extractor functions.");
+}
+
 function registerControllers() {
+    logger.trace("Initializing OSM Extractor controllers...");
     var IM = Packages.com.google.refine.importing.ImportingManager;
 
     IM.registerController(
@@ -48,6 +58,7 @@ function registerControllers() {
         "osm-data-importing-controller",
         new Packages.com.labiangashi.refine.osmextractor.controllers.OSMDataImportingController()
     );
+    logger.trace("Finished initializing OSM Extractor controllers.");
 }
 
 function init() {
@@ -74,7 +85,10 @@ function init() {
     );
 
     registerCommands();
+    registerFunctions();
     registerControllers();
+
+    logger.trace("Finished initializing OSM Extractor extension.");
 }
 
 function process(path, request, response) {

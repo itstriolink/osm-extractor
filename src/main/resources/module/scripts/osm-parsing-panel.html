@@ -20,32 +20,29 @@
     <div bind="dataPanel" class="default-importing-parsing-data-panel mapping-table-container">
         <table bind="columnList" id="raw-query-response-table">
             <tbody>
-            <tr style="height: 95%;">
+            <tr>
                 <td>
                     <div class="tags-table">
                         <table class="data-table" bind="tagsTable"/>
                     </div>
                 </td>
             </tr>
-            <tr style="height: 5%;">
-                <td>
-                    <div class="select-unselect-all">
-                        <table class="data-table" bind="selectUnselectAllTable" style="text-align: center;">
-                            <tr class="odd">
-                                <td width="100%">
-                                    <button class="button" bind="selectAllButton"></button>
-                                    <button class="button" bind="deselectAllButton"></button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-            </tr>
+
             </tbody>
         </table>
     </div>
+    <div class="default-importing-parsing-data-panel select-unselect-all-container" >
+        <table class="data-table" bind="selectUnselectAllTable" style="display: table; text-align: center;">
+            <tr class="odd">
+                <td style="display: table-cell; vertical-align: middle;">
+                    <button class="button" bind="selectAllButton"></button>
+                    <button class="button" bind="deselectAllButton"></button>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-    <div bind="controlPanel" class="default-importing-parsing-control-panel osm-parsing-options ">
+    <div bind="controlPanel" class="default-importing-parsing-control-panel osm-parsing-options">
         <table>
             <tr>
                 <td>
