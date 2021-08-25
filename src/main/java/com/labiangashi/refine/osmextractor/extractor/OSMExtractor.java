@@ -93,8 +93,8 @@ public class OSMExtractor {
         this.includeMetadata = includeMetadata;
     }
 
-    public boolean getIsCenter() {
-        return isCenter;
+    public void setWKTPrecisionScale(double precisionScale) {
+        this.wktWriter.setPrecisionModel(new PrecisionModel(precisionScale));
     }
 
     public void setIsCenter(boolean isCenter) {

@@ -70,11 +70,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.lang.Math.round;
 
 public class OSMDataImportingController implements ImportingController {
     private static final Logger logger = LoggerFactory.getLogger("OSMDataImportingController");
@@ -391,6 +395,21 @@ public class OSMDataImportingController implements ImportingController {
         boolean includeMultiLineStrings = importOptions.get("multiLineStrings").asBoolean(false);
         boolean includeMultiPolygons = importOptions.get("multiPolygons").asBoolean(false);
 
+        int geometryNumericScale = importOptions.get("geometryNumericScale").asInt(7);
+
+        if(geometryNumericScale < 0 || geometryNumericScale > 10) {
+            geometryNumericScale = 7;
+        }
+
+        double scaleFactor = 1.0D;
+
+        for(int i = 0; i < geometryNumericScale; i++) {
+            scaleFactor *= 10.0D;
+        }
+
+        double finalScaleFactor = scaleFactor;
+        osmExtractor.setWKTPrecisionScale(finalScaleFactor / 10.0D);
+
         job.setState("creating-project");
 
         final Project project = new Project();
@@ -461,8 +480,8 @@ public class OSMDataImportingController implements ImportingController {
                         Row row = new Row(project.columnModel.getMaxCellIndex());
                         Map<String, String> currentTags = element.getTags();
 
-                        double longitude = point.getX();
-                        double latitude = point.getY();
+                        double longitude = round(point.getX() * finalScaleFactor) / finalScaleFactor;
+                        double latitude = round(point.getY() * finalScaleFactor) / finalScaleFactor;
 
                         for (Column column : project.columnModel.columns) {
                             String columnName = column.getName();

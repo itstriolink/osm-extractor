@@ -102,7 +102,9 @@ Refine.OSMImportingController.prototype._showParsingPanel = function () {
     this._parsingPanelElmts.configureMapping.html($.i18n('osm-extractor/configure-mapping'));
     this._parsingPanelElmts.projectName.html($.i18n('osm-extractor/project-name'));
     this._parsingPanelElmts.createProjectButton.html($.i18n('osm-extractor/create-project'));
+
     this._parsingPanelElmts.includeLabel.html($.i18n('osm-extractor/include-label'));
+    this._parsingPanelElmts.optionsLabel.html($.i18n('osm-extractor/options-label'));
 
     this._parsingPanelElmts.selectAllButton.html($.i18n('osm-extractor/select-all-tags'));
     this._parsingPanelElmts.deselectAllButton.html($.i18n('osm-extractor/deselect-all-tags'));
@@ -114,6 +116,8 @@ Refine.OSMImportingController.prototype._showParsingPanel = function () {
     this._parsingPanelElmts.linesLabel.html($.i18n('osm-extractor/lines-wkt'));
     this._parsingPanelElmts.multiLinesLabel.html($.i18n('osm-extractor/multi-lines-wkt'));
     this._parsingPanelElmts.multiPolygonsLabel.html($.i18n('osm-extractor/multi-polygons-wkt'));
+
+    this._parsingPanelElmts.geometryNumericScaleLabel.html($.i18n('osm-extractor/geometry-numeric-scale'));
 
     this._parsingPanelElmts.loadingMessage.html($.i18n('osm-extractor/loading-message'));
     this._parsingPanelElmts.abortButton.html($.i18n('osm-extractor/abort-label'));
@@ -345,13 +349,13 @@ Refine.OSMImportingController.prototype._createProject = function () {
         "encoding": "UTF-8"
     }
     var tags = [];
-    var geometry = [];
     var importOptions = {
         "points": self._parsingPanelElmts.pointsCheckbox[0].checked,
         "pointsAsLatLon": self._parsingPanelElmts.pointsLatLonCheckbox[0].checked,
         "pointsDelimited": self._parsingPanelElmts.pointsDelimitedCheckbox[0].checked,
         "pointsSeparator": self._parsingPanelElmts.pointsDelimitedSeparatorInput.val(),
         "pointsAsWKT": self._parsingPanelElmts.pointsWKTCheckbox[0].checked,
+        "geometryNumericScale": self._parsingPanelElmts.geometryNumericScaleInput.val(),
         "lineStrings": self._parsingPanelElmts.linesCheckbox[0].checked,
         "multiLineStrings": self._parsingPanelElmts.multiLinesCheckbox[0].checked,
         "multiPolygons": self._parsingPanelElmts.multiPolygonsCheckbox[0].checked
