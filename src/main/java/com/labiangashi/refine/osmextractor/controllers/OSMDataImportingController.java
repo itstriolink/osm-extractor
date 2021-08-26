@@ -58,6 +58,8 @@ import de.topobyte.osm4j.core.resolve.EntityNotFoundStrategy;
 import de.topobyte.osm4j.geometry.NodeBuilder;
 import de.topobyte.osm4j.xml.dynsax.OsmXmlReader;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -512,7 +514,15 @@ public class OSMDataImportingController implements ImportingController {
                                         value = element.getMetadata().getVersion();
                                         break;
                                     case "@timestamp":
-                                        value = element.getMetadata().getTimestamp();
+                                        if(element.getMetadata().getTimestamp() != 0) {
+                                            DateTimeFormatter formatter = ISODateTimeFormat.dateTime();
+
+                                            value =  ParsingUtilities.stringToDate(
+                                                    formatter.print(element.getMetadata().getTimestamp())
+                                            );
+                                        } else {
+                                            value = null;
+                                        }
                                         break;
                                     case "@changeset":
                                         value = element.getMetadata().getChangeset();
