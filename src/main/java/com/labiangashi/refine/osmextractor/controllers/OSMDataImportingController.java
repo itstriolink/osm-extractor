@@ -36,13 +36,13 @@ import com.google.refine.importing.ImportingController;
 import com.google.refine.importing.ImportingJob;
 import com.google.refine.importing.ImportingManager;
 import com.google.refine.model.*;
+import com.google.refine.util.JSONUtilities;
+import com.google.refine.util.ParsingUtilities;
 import com.labiangashi.refine.osmextractor.extractor.OSMElement;
 import com.labiangashi.refine.osmextractor.extractor.OSMExtractor;
 import com.labiangashi.refine.osmextractor.util.Constants;
 import com.labiangashi.refine.osmextractor.util.OSMTags;
 import com.labiangashi.refine.osmextractor.util.Util;
-import com.google.refine.util.JSONUtilities;
-import com.google.refine.util.ParsingUtilities;
 import de.topobyte.osm4j.core.access.OsmInputException;
 import de.topobyte.osm4j.core.access.OsmReader;
 import de.topobyte.osm4j.core.dataset.InMemoryMapDataSet;
@@ -70,10 +70,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.RoundingMode;
+import java.io.Serializable;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -144,21 +143,25 @@ public class OSMDataImportingController implements ImportingController {
         ObjectNode result = ParsingUtilities.mapper.createObjectNode();
         String overpassQuery = parameters.getProperty("overpassQuery");
         String overpassInstance = parameters.getProperty("overpassInstance");
+
+        String cleanedQuery = Util.cleanQuery(overpassQuery);
+
         if (overpassInstance == null || overpassInstance.trim().isEmpty()
-                || overpassQuery == null || overpassQuery.trim().isEmpty()) {
+                || cleanedQuery == null || cleanedQuery.trim().isEmpty()) {
             HttpUtilities.respond(response, "error", "Missing Overpass query or Overpass API instance");
             return;
         }
-        if (!Util.isValidOverpassQuery(overpassQuery)) {
+
+        if (!Util.isValidOverpassQuery(cleanedQuery)) {
             HttpUtilities.respond(response, "error", " \"[out:json]\" and \"[out:csv]\" commands are not allowed in the Overpass QL query.");
             return;
         }
 
         osmExtractor = new OSMExtractor();
-        osmExtractor.setOverpassQuery(overpassQuery);
+        osmExtractor.setOverpassQuery(cleanedQuery);
         osmExtractor.setOverpassInstance(overpassInstance);
-        osmExtractor.setIncludeMetadata(Util.overpassQueryContainsMetadata(overpassQuery));
-        osmExtractor.setIsCenter(Util.overpassQueryContainsOutCenter(overpassQuery));
+        osmExtractor.setIncludeMetadata(Util.overpassQueryContainsMetadata(cleanedQuery));
+        osmExtractor.setIsCenter(Util.overpassQueryContainsOutCenter(cleanedQuery));
 
         JSONUtilities.safePut(result, "status", "ok");
 
@@ -320,15 +323,15 @@ public class OSMDataImportingController implements ImportingController {
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
             }
-            for(String identifierTag: identifierTags) {
+            for (String identifierTag : identifierTags) {
                 ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
                 tagNode.put("name", identifierTag);
                 tagNode.put("type", "Identifier");
                 JSONUtilities.append(tagsNode, tagNode);
             }
 
-            if(includeMetadata) {
-                for(String metadataTag : metadataTags) {
+            if (includeMetadata) {
+                for (String metadataTag : metadataTags) {
                     ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
                     tagNode.put("name", metadataTag);
                     tagNode.put("type", "Metadata");
@@ -336,14 +339,14 @@ public class OSMDataImportingController implements ImportingController {
                 }
             }
 
-            for(String mainTag : mainTags) {
+            for (String mainTag : mainTags) {
                 ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
                 tagNode.put("name", mainTag);
                 tagNode.put("type", "Main");
                 JSONUtilities.append(tagsNode, tagNode);
             }
 
-            for(String otherTag : otherTags) {
+            for (String otherTag : otherTags) {
                 ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
                 tagNode.put("name", otherTag);
                 tagNode.put("type", "Other");
@@ -397,13 +400,13 @@ public class OSMDataImportingController implements ImportingController {
 
         int geometryNumericScale = importOptions.get("geometryNumericScale").asInt(7);
 
-        if(geometryNumericScale < 0 || geometryNumericScale > 10) {
+        if (geometryNumericScale < 0 || geometryNumericScale > 10) {
             geometryNumericScale = 7;
         }
 
         double scaleFactor = 1.0D;
 
-        for(int i = 0; i < geometryNumericScale; i++) {
+        for (int i = 0; i < geometryNumericScale; i++) {
             scaleFactor *= 10.0D;
         }
 
@@ -487,38 +490,38 @@ public class OSMDataImportingController implements ImportingController {
                             String columnName = column.getName();
                             String originalTagName = tagMappings.getOrDefault(columnName, null);
 
-                            String value;
+                            Serializable value;
 
                             if (pointsAsLatLon && columnName.equals(Constants.Importing.LATITUDE_COLUMN_NAME)) {
-                                value = String.valueOf(latitude);
+                                value = latitude;
                             } else if (pointsAsLatLon && columnName.equals(Constants.Importing.LONGITUDE_COLUMN_NAME)) {
-                                value = String.valueOf(longitude);
+                                value = longitude;
                             } else if (pointsDelimited && columnName.equals(Constants.Importing.POINT_DELIMITED_COLUMN_NAME)) {
-                                value = String.format("%f%s%f", latitude, pointsSeparator, longitude);
+                                value = String.format("%s%s%s", latitude, pointsSeparator, longitude);
                             } else if (pointsAsWKT && columnName.equals(Constants.Importing.WKT_COLUMN_NAME)) {
                                 value = osmExtractor.getWKTRepresentation(point);
                             } else if (originalTagName != null) {
                                 switch (originalTagName) {
                                     case "@id":
-                                        value = String.valueOf(element.getId());
+                                        value = element.getId();
                                         break;
                                     case "@uid":
-                                        value = String.valueOf(element.getMetadata().getUid());
+                                        value = element.getMetadata().getUid();
                                         break;
                                     case "@version":
-                                        value = String.valueOf(element.getMetadata().getVersion());
+                                        value = element.getMetadata().getVersion();
                                         break;
                                     case "@timestamp":
-                                        value = String.valueOf(element.getMetadata().getTimestamp());
+                                        value = element.getMetadata().getTimestamp();
                                         break;
                                     case "@changeset":
-                                        value = String.valueOf(element.getMetadata().getChangeset());
+                                        value = element.getMetadata().getChangeset();
                                         break;
                                     case "@user":
                                         value = element.getMetadata().getUser();
                                         break;
                                     case "@visible":
-                                        value = element.getMetadata().isVisible() ? "1" : "0";
+                                        value = element.getMetadata().isVisible() ? true : false;
                                         break;
                                     default:
                                         if (currentTags.get(originalTagName) != null) {

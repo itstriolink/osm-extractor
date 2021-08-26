@@ -34,22 +34,21 @@ public class Util {
     }
 
     public static boolean overpassQueryContainsMetadata(String query) {
-        Pattern pattern = Pattern.compile(Constants.Importing.COMMENTED_METADATA_REGEX, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(query);
-        boolean matchFound = matcher.find();
-
-        return !matchFound && query.contains("out meta");
-
+        return query.contains("out meta");
     }
 
     public static boolean overpassQueryContainsOutCenter(String query) {
-        Pattern pattern = Pattern.compile(Constants.Importing.COMMENTED_CENTER_REGEX, Pattern.CASE_INSENSITIVE);
-        Pattern pattern2 = Pattern.compile(Constants.Importing.CONTAINS_CENTER_REGEX, Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile(Constants.Importing.CONTAINS_CENTER_REGEX, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(query);
-        Matcher matcher2 = pattern2.matcher(query);
-        boolean matchFound = matcher.find();
-        boolean matchFound2 = matcher2.find();
 
-        return !matchFound && matchFound2;
+        return matcher.find();
+    }
+
+    public static String cleanQuery(String query) {
+        if (query != null) {
+            return query.replaceAll("/\\*[^*]*(?:\\*(?!/)[^*]*)*\\*/|//.*", "");
+        } else {
+            return null;
+        }
     }
 }
