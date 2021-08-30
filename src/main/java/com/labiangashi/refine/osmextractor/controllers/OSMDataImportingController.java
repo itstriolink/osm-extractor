@@ -163,7 +163,6 @@ public class OSMDataImportingController implements ImportingController {
         osmExtractor.setOverpassQuery(cleanedQuery);
         osmExtractor.setOverpassInstance(overpassInstance);
         osmExtractor.setIncludeMetadata(Util.overpassQueryContainsMetadata(cleanedQuery));
-        osmExtractor.setIsCenter(Util.overpassQueryContainsOutCenter(cleanedQuery));
 
         JSONUtilities.safePut(result, "status", "ok");
 
@@ -192,7 +191,7 @@ public class OSMDataImportingController implements ImportingController {
 
             InputStream input = new URL(query).openStream();
             OsmReader reader = new OsmXmlReader(input, true);
-            InMemoryMapDataSet data = osmExtractor.loadData(reader);
+            InMemoryMapDataSet data = osmExtractor.loadData(reader, true);
             input.close();
 
             EntityFinder wayFinder = EntityFinders.create(data,
@@ -242,7 +241,7 @@ public class OSMDataImportingController implements ImportingController {
 
             for (OsmWay way : data.getWays().valueCollection()) {
                 boolean found = false;
-                if (relationWays.contains(way)) {
+                if (relationWays.contains(way) && way.getNumberOfTags() == 0) {
                     continue;
                 }
 
@@ -617,8 +616,8 @@ public class OSMDataImportingController implements ImportingController {
 
                         project.rows.add(row);
 
-                        job.setProgress(index * 100 / lineStrings.size() / includeItemsCount,
-                                "Parsed " + index + "/" + lineStrings.size() + " OpenStreetMap lines.");
+                        job.setProgress(index * 100 / multiLineStrings.size() / includeItemsCount,
+                                "Parsed " + index + "/" + multiLineStrings.size() + " OpenStreetMap lines.");
                         index++;
                     }
                 }

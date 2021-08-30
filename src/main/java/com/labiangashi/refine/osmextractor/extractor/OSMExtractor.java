@@ -47,10 +47,11 @@ import java.util.List;
 import java.util.Map;
 
 public class OSMExtractor {
-    private final List<OSMElement> points;
-    private final List<OSMElement> lineStrings;
-    private final List<OSMElement> multiLineStrings;
-    private final List<OSMElement> multiPolygons;
+    private List<OSMElement> points;
+    private List<OSMElement> lineStrings;
+    private List<OSMElement> multiLineStrings;
+    private List<OSMElement> multiPolygons;
+
     private final GeometryFactory geometryFactory;
     private final WayBuilder wayBuilder;
     private final RegionBuilder regionBuilder;
@@ -58,7 +59,7 @@ public class OSMExtractor {
     private String overpassInstance;
     private String overpassQuery;
     private boolean includeMetadata;
-    private boolean isCenter;
+
     private InMemoryMapDataSet data;
 
 
@@ -68,7 +69,6 @@ public class OSMExtractor {
         this.multiLineStrings = new ArrayList<>();
         this.multiPolygons = new ArrayList<>();
 
-        isCenter = false;
         includeMetadata = false;
 
         this.geometryFactory = new GeometryFactory();
@@ -97,10 +97,6 @@ public class OSMExtractor {
         this.wktWriter.setPrecisionModel(new PrecisionModel(precisionScale));
     }
 
-    public void setIsCenter(boolean isCenter) {
-        this.isCenter = isCenter;
-    }
-
     public String getOverpassQuery() {
         return overpassQuery;
     }
@@ -113,13 +109,12 @@ public class OSMExtractor {
         return points;
     }
 
-
     public List<OSMElement> getLineStrings() {
         return lineStrings;
     }
 
     public List<OSMElement> getMultiLineStrings() {
-        return lineStrings;
+        return multiLineStrings;
     }
 
     public List<OSMElement> getMultiPolygons() {
@@ -142,8 +137,14 @@ public class OSMExtractor {
         this.multiPolygons.add(new OSMElement(multiPolygon, id, tags, metadata));
     }
 
-    public InMemoryMapDataSet loadData(OsmReader reader) throws IOException, OsmInputException {
-        return this.data = MapDataSetLoader.read(reader, true, true, true);
+    public InMemoryMapDataSet loadData(OsmReader reader, boolean resetGeometry) throws IOException, OsmInputException {
+        this.data = MapDataSetLoader.read(reader, true, true, true);
+
+        if (resetGeometry) {
+            resetGeometry();
+        }
+
+        return this.data;
     }
 
     public int getPointsSize() {
@@ -154,21 +155,10 @@ public class OSMExtractor {
         return this.lineStrings.size();
     }
 
-    public int getMultiLineStringsSize() {
-        return this.lineStrings.size();
-    }
+    public int getMultiLineStringsSize() { return this.multiLineStrings.size(); }
 
     public int getMultiPolygonsSize() {
         return this.multiPolygons.size();
-    }
-
-    public Point buildPoint(double lat, double lon) {
-        if (lat > 0.0d && lon > 0.0d) {
-            Coordinate coordinate = new Coordinate(lat, lon);
-            return geometryFactory.createPoint(coordinate);
-        } else {
-            return null;
-        }
     }
 
     public MultiLineString buildMultiLineString(LineString[] lineStrings) {
@@ -221,5 +211,12 @@ public class OSMExtractor {
         } catch (EntityNotFoundException e) {
             return null;
         }
+    }
+
+    private void resetGeometry() {
+        this.points = new ArrayList<>();
+        this.lineStrings = new ArrayList<>();
+        this.multiLineStrings = new ArrayList<>();
+        this.multiPolygons = new ArrayList<>();
     }
 }
