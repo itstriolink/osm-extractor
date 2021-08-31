@@ -1,6 +1,7 @@
 target/
 src/main/resources/module/MOD-INF/classes/
 src/main/resources/module/MOD-INF/lib/
+
 .idea
 
 *.class
@@ -15,3 +16,11 @@ src/main/resources/module/MOD-INF/lib/
 *.rar
 
 *.iml
+
+documentation/*
+!documentation/*.aux
+!documentation/*.bib
+!documentation/*.cls
+!documentation/*.sty
+!documentation/*.tex
+!documentation/**/
