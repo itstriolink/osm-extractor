@@ -86,10 +86,6 @@ public class OSMDataImportingController implements ImportingController {
     protected RefineServlet servlet;
     private OSMExtractor osmExtractor;
 
-    private static void createColumn(Project project, String columnName) {
-        createColumn(project, columnName, null);
-    }
-
     private static void createColumn(Project project, String columnName, String columnDescription) {
         if (columnName != null && !columnName.trim().isEmpty()) {
             try {
@@ -313,21 +309,12 @@ public class OSMDataImportingController implements ImportingController {
                     .sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()))
                     .map(Map.Entry::getKey)
                     .collect(Collectors.toList());
-            List<String> finalTags;
 
-            if (includeMetadata) {
-                finalTags = Stream.of(identifierTags, metadataTags, mainTags, otherTags)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList());
-            } else {
-                finalTags = Stream.of(identifierTags, mainTags, otherTags)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList());
-            }
+
             for (String identifierTag : identifierTags) {
                 ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
                 tagNode.put("name", identifierTag);
-                tagNode.put("type", "Identifier");
+                tagNode.put("description", "Identifier");
                 JSONUtilities.append(tagsNode, tagNode);
             }
 
@@ -335,7 +322,7 @@ public class OSMDataImportingController implements ImportingController {
                 for (String metadataTag : metadataTags) {
                     ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
                     tagNode.put("name", metadataTag);
-                    tagNode.put("type", "Metadata");
+                    tagNode.put("description", "Metadata");
                     JSONUtilities.append(tagsNode, tagNode);
                 }
             }
@@ -343,14 +330,14 @@ public class OSMDataImportingController implements ImportingController {
             for (String mainTag : mainTags) {
                 ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
                 tagNode.put("name", mainTag);
-                tagNode.put("type", "Main");
+                tagNode.put("description", "Main");
                 JSONUtilities.append(tagsNode, tagNode);
             }
 
             for (String otherTag : otherTags) {
                 ObjectNode tagNode = ParsingUtilities.mapper.createObjectNode();
                 tagNode.put("name", otherTag);
-                tagNode.put("type", "Other");
+                tagNode.put("description", "Other");
                 JSONUtilities.append(tagsNode, tagNode);
             }
 
@@ -446,9 +433,10 @@ public class OSMDataImportingController implements ImportingController {
                         ObjectNode obj = (ObjectNode) node;
                         String osmTag = obj.get("osmTag").asText();
                         String newColumnName = obj.get("newColumnName").asText();
+                        String newColumnDescription = obj.get("newColumnDescription").asText();
                         tagMappings.put(newColumnName, osmTag);
 
-                        createColumn(project, newColumnName);
+                        createColumn(project, newColumnName, newColumnDescription);
                     }
                 }
             }
@@ -501,54 +489,15 @@ public class OSMDataImportingController implements ImportingController {
                                 value = String.format("%s%s%s", latitude, pointsSeparator, longitude);
                             } else if (pointsAsWKT && columnName.equals(Constants.Importing.WKT_COLUMN_NAME)) {
                                 value = osmExtractor.getWKTRepresentation(point);
-                            } else if (originalTagName != null) {
-                                switch (originalTagName) {
-                                    case "@id":
-                                        value = element.getId();
-                                        break;
-                                    case "@uid":
-                                        value = element.getMetadata().getUid();
-                                        break;
-                                    case "@version":
-                                        value = element.getMetadata().getVersion();
-                                        break;
-                                    case "@timestamp":
-                                        if(element.getMetadata().getTimestamp() != 0) {
-                                            DateTimeFormatter formatter = ISODateTimeFormat.dateTime();
-
-                                            value =  ParsingUtilities.stringToDate(
-                                                    formatter.print(element.getMetadata().getTimestamp())
-                                            );
-                                        } else {
-                                            value = null;
-                                        }
-                                        break;
-                                    case "@changeset":
-                                        value = element.getMetadata().getChangeset();
-                                        break;
-                                    case "@user":
-                                        value = element.getMetadata().getUser();
-                                        break;
-                                    case "@visible":
-                                        value = element.getMetadata().isVisible() ? true : false;
-                                        break;
-                                    default:
-                                        if (currentTags.get(originalTagName) != null) {
-                                            value = currentTags.get(originalTagName);
-                                        } else {
-                                            value = null;
-                                        }
-                                        break;
-                                }
                             } else {
-                                value = null;
+                                value = getSerializable(element, currentTags, originalTagName);
                             }
 
                             row.setCell(column.getCellIndex(), new Cell(value, null));
                         }
 
                         project.rows.add(row);
-                        job.setProgress(index * 100 / points.size(),
+                        job.setProgress(index * 100 / points.size() / includeItemsCount,
                                 "Parsed " + index + "/" + points.size() + " OpenStreetMap points.");
                         index++;
                     }
@@ -567,14 +516,12 @@ public class OSMDataImportingController implements ImportingController {
                             String columnName = column.getName();
                             String originalTagName = tagMappings.getOrDefault(columnName, null);
 
-                            String value;
+                            Serializable value;
 
                             if (columnName.equals(Constants.Importing.WKT_COLUMN_NAME)) {
                                 value = osmExtractor.getWKTRepresentation(lineString);
-                            } else if (originalTagName != null && currentTags.get(originalTagName) != null) {
-                                value = currentTags.get(originalTagName);
                             } else {
-                                value = null;
+                                value = getSerializable(element, currentTags, originalTagName);
                             }
 
                             row.setCell(column.getCellIndex(), new Cell(value, null));
@@ -601,14 +548,12 @@ public class OSMDataImportingController implements ImportingController {
                             String columnName = column.getName();
                             String originalTagName = tagMappings.getOrDefault(columnName, null);
 
-                            String value;
+                            Serializable value;
 
                             if (columnName.equals(Constants.Importing.WKT_COLUMN_NAME)) {
                                 value = osmExtractor.getWKTRepresentation(multiLineString);
-                            } else if (originalTagName != null && currentTags.get(originalTagName) != null) {
-                                value = currentTags.get(originalTagName);
                             } else {
-                                value = null;
+                                value = getSerializable(element, currentTags, originalTagName);
                             }
 
                             row.setCell(column.getCellIndex(), new Cell(value, null));
@@ -635,14 +580,12 @@ public class OSMDataImportingController implements ImportingController {
                             String columnName = column.getName();
                             String originalTagName = tagMappings.getOrDefault(columnName, null);
 
-                            String value;
+                            Serializable value;
 
                             if (columnName.equals(Constants.Importing.WKT_COLUMN_NAME)) {
                                 value = osmExtractor.getWKTRepresentation(multiPolygon);
-                            } else if (originalTagName != null && currentTags.get(originalTagName) != null) {
-                                value = currentTags.get(originalTagName);
                             } else {
-                                value = null;
+                                value = getSerializable(element, currentTags, originalTagName);
                             }
 
                             row.setCell(column.getCellIndex(), new Cell(value, null));
@@ -650,7 +593,7 @@ public class OSMDataImportingController implements ImportingController {
 
                         project.rows.add(row);
 
-                        job.setProgress(index * 100 / multiPolygons.size(),
+                        job.setProgress(index * 100 / multiPolygons.size() / includeItemsCount,
                                 "Parsed " + index + "/" + multiPolygons.size() + " OpenStreetMap polygons.");
                         index++;
                     }
@@ -673,6 +616,55 @@ public class OSMDataImportingController implements ImportingController {
         }).start();
 
         HttpUtilities.respond(response, "ok", "done");
+    }
+
+    private Serializable getSerializable(OSMElement element, Map<String, String> currentTags, String originalTagName) {
+        Serializable value;
+
+        if (originalTagName != null) {
+            switch (originalTagName) {
+                case "@id":
+                    value = element.getId();
+                    break;
+                case "@uid":
+                    value = element.getMetadata().getUid();
+                    break;
+                case "@version":
+                    value = element.getMetadata().getVersion();
+                    break;
+                case "@timestamp":
+                    if(element.getMetadata().getTimestamp() != 0) {
+                        DateTimeFormatter formatter = ISODateTimeFormat.dateTime();
+
+                        value =  ParsingUtilities.stringToDate(
+                                formatter.print(element.getMetadata().getTimestamp())
+                        );
+                    } else {
+                        value = null;
+                    }
+                    break;
+                case "@changeset":
+                    value = element.getMetadata().getChangeset();
+                    break;
+                case "@user":
+                    value = element.getMetadata().getUser();
+                    break;
+                case "@visible":
+                    value = element.getMetadata().isVisible() ? true : false;
+                    break;
+                default:
+                    if (currentTags.get(originalTagName) != null) {
+                        value = currentTags.get(originalTagName);
+                    } else {
+                        value = null;
+                    }
+                    break;
+            }
+        } else {
+            value = null;
+        }
+
+        return value;
     }
 }
 

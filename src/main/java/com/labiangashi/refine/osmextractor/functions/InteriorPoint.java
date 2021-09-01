@@ -30,6 +30,7 @@ import com.google.refine.grel.ControlFunctionRegistry;
 import com.google.refine.grel.Function;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
@@ -37,14 +38,20 @@ import org.locationtech.jts.io.WKTWriter;
 import java.util.Properties;
 
 public class InteriorPoint implements Function {
+    static WKTWriter wktWriter;
+
+    static {
+        wktWriter = new WKTWriter();
+        wktWriter.setPrecisionModel(new PrecisionModel(1000000.0D));
+    }
+
     public Object call(Properties bindings, Object[] args) {
         if (args.length == 1 && args[0] != null && args[0] instanceof String) {
             try {
                 Geometry geometry = new WKTReader().read((String) args[0]);
-
                 Point point = org.locationtech.jts.algorithm.InteriorPoint.getInteriorPoint(geometry);
 
-                return new WKTWriter().writeFormatted(point);
+                return wktWriter.write(point);
             } catch (ParseException e) {
                 return new EvalError(
                         ControlFunctionRegistry.getFunctionName(this) +
