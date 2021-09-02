@@ -5,6 +5,20 @@ stages:
   - test
   - release
 
+documentation:
+  image: timnn/texlive
+  stage: build
+  script: [
+      "apt-get update && apt-get install -y python-pip",
+      "pip install Pygments",
+      "cd documentation",
+      "pdflatex -synctex=1 --shell-escape -interaction=nonstopmode Main.tex"
+  ]
+  artifacts:
+    paths:
+      - documentation/Main.pdf
+    expire_in: never
+
 build:
   stage: build
   rules:

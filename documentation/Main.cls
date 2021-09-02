@@ -147,15 +147,15 @@
 \examiner    {}
 \degree      {}
 \authors     {}
-\university  {\texorpdfstring{\href{https://www.ost..ch/}
+\university  {\texorpdfstring{\href{https://www.ost.ch/}
                 {OST – Ostschweizer Fachhochschule}}
                 {OST – Ostschweizer Fachhochschule}}
 \department  {\texorpdfstring{\href{https://www.ost.ch/de/studium/technik/master-of-science-in-engineering-mse/profile/mse-computer-science}
-                {Computer Science TBD}}
-                {Computer Science TBD}}
+                {Software and Systems}}
+                {Software and Systems}}
 \faculty     {\texorpdfstring{\href{https://www.msengineering.ch/en/specializations/information-and-communication-technologies.html}
-                {Information and Communication Technologies TBD }}
-                {Information and Communication Technologies TBD}}
+                {Information and Communication Technologies}}
+                {Information and Communication Technologies}}
 \addresses   {}
 \subject     {}
 \keywords    {}
