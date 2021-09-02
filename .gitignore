@@ -18,7 +18,6 @@ src/main/resources/module/MOD-INF/lib/
 *.iml
 
 documentation/*
-!documentation/*.aux
 !documentation/*.bib
 !documentation/*.cls
 !documentation/*.sty
