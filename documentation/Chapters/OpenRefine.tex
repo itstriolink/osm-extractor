@@ -14,6 +14,13 @@ OpenRefine can do things such as:
     \item Data reconciliation with external services such as \href{https://www.wikidata.org/wiki/Wikidata:Main_Page}{Wikidata}
     \item Accessing website data for scraping
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=7cm]{./Figures/OpenRefine/openrefine_logo.png}
+    \caption{The OpenRefine Logo}
+\end{figure}
+
 \newpage
 \section{The OpenRefine Graphical User Interface (GUI)}
 OpenRefine offers an interactive Graphical User Interface (GUI) that visualizes each step of working with your data set.
@@ -27,6 +34,7 @@ the spreadsheet reflects the changes. TBD
     \includegraphics[width=\linewidth]{./Figures/OpenRefine/openrefine_gui.png}
     \caption{The OpenRefine GUI}
 \end{figure}
+OpenRefine offers many powerful features such as the \textbf{Undo/Redo} feature or the low coding functions which are essential for efficient bulk data cleaning and transformation.
 \newpage
 \section{OpenRefine Data}
 OpenRefine data can come from various sources and usually is initially received as unstructured data. Using OpenRefine, such data is transformed
@@ -39,5 +47,19 @@ in the official OpenRefine code base are importing Google spreadsheets into Open
 language for performing functions on the data etc.\\
 \newline
 In this project, two extensions are built using OpenRefine's extension architecture in order to extend OpenRefine's functionality to
-be able to import OpenStreetMap data into OpenRefine (\hyperref[{ch:the-osm-extractor-extension}]OSM Extractor)and also export geospatial
+be able to import OpenStreetMap data into OpenRefine (\hyperref[ch:the-osm-extractor-extension]{OSM Extractor}) and also export geospatial
 data into the GeoJSON format (\hyperref[ch:the-geojson-export-extension]{GeoJSON Export}).
+\section{GREL Functions}
+A key feature of OpenRefine is the \“General Refine Expression Language\”, or GREL.
+GREL is an expression language specific to OpenRefine, which is similar to JavaScript and is convenient for performing different functions such as:
+\begin{itemize}
+    \item String operations
+    \item Boolean operators
+    \item Parsing HTML, JSON or XML
+    \item Selecting HTML elements
+    \item Iterating over elements etc.
+    \item GREL is going to be used in our case to access the HTML DOM and
+    \item select the appropriate data out of the HTML page for scraping.
+\end{itemize} \cite{OpenRefineCoreDump}
+One of the extensions of this project includes adding a new GREL function called \mintinline{java}{interiorPoint()}
+which serves as a function to compute the interior point of a Geometry.
