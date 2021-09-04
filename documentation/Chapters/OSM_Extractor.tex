@@ -28,7 +28,7 @@ in combination with other tags such as [name=*], [cuisine=*] etc.\\
 More information on OpenStreetMap tags and their popularity can be found under \href{https://taginfo.openstreetmap.org/}{https://taginfo.openstreetmap.org/}\\
 \newline
 Example of an OSM node (including its metadata), represented using the official OSM data representation (XML):
-\begin{minted}[tabsize=2,breaklines]{xml}
+\begin{minted}[tabsize=2,breaklines, linenos]{xml}
  <node id="1831881213" version="1" changeset="12370172" lat="54.0900666" lon="12.2539381" user="lafkor" uid="75625" visible="true" timestamp="2012-07-20T09:43:19Z">
   <tag k="name" v="Neu Broderstorf"/>
   <tag k="traffic_sign" v="city_limit"/>
@@ -52,7 +52,7 @@ In this project, the Overpass QL (the second query language created for the Over
 It is a procedural, imperative programming language written with a C style syntax. \cite{WhatIsOverpassQL}\\
 \newline
 Here's an example of an Overpass QL query, which queries bus stops with shelter and inside a specific bounding box:\\
-\begin{minted}[tabsize=2,breaklines]{sql}
+\begin{minted}[tabsize=2,breaklines, linenos]{sql}
 node
   ["highway"="bus_stop"]
   ["shelter"="yes"]
@@ -166,7 +166,7 @@ repository \href{https://github.com/simonpoole/preset-utils/blob/master/src/main
 be included in the project by selecting the checkbow on the appropriate row.
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{./Figures/OSM_Extractor/osm_extractor_parsing_table.png}
-    \caption{The \textit{OpenStreetMap (Overpass)} mapping \& parsinf options in OpenRefine}
+    \caption{The \textit{OpenStreetMap (Overpass)} mapping \& parsing options in OpenRefine}
 \end{figure}
 Below the table, there are also options on what types of geometries to include in the project and also some other extra options.
 Users can include:
@@ -184,7 +184,7 @@ features during the conversion phase. These concepts and this process is thourou
 \hyperref[sec:conversion-to-simple-features-geometry]{Conversion to Simple Features Geometry} chapter.\\
 \newline
 The user can also select the numeric scale of the decimal values of the geometries by tweaking the \textbf{Geometry numeric scale}
-option to a different number, the default value is \texbf{7}. This number represents the number of decimal digits to the right
+option to a different number, the default value is \textbf{7}. This number represents the number of decimal digits to the right
 of the decimal point of a decimal number, e.g. \textit{47.4955184} has a numeric scale of 7 because there are 7 numbers to
 the right of the decimal point of the number (this being the default numeric scale). This numeric scale is used
 while processing lat/lon values or WKT values. \\
@@ -200,7 +200,7 @@ page in order to initiate the creation of a new OpenRefine project.
 The creation process is executed on a separate thread and utilizes OpenRefine's core engine to do so.
 The process shouldn't take very long before it's fully completed.
 \subsubsection{The Project}
-The created project has columns of the tags that were selected in the mapping /& parsing stage. There will be some extra columns,
+The created project has columns of the tags that were selected in the mapping \& parsing stage. There will be some extra columns,
 depending on what options were selected. For example, if points were included as lat/long, there will be two columns called \textit{latitude}
 and \textit{longitude} that contain the value of X and Y of the points. Moreover, if the \textit{Points as delimited text} option was selected,
 another column called \textit{point\_delimited} is added containing latitude/longitude columns, separated with

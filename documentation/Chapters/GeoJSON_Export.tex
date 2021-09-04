@@ -18,7 +18,7 @@ Sets of features are contained by \mintinline{bash}{FeatureCollection} objects. 
 \newline
 
 A \textit{.geojson} file looks something like this:
-\begin{minted}[linebreaks, linenos]{json}
+\begin{minted}[breaklines, linenos]{json}
 {
   "type": "FeatureCollection",
   "features": [
@@ -128,7 +128,7 @@ The right side of the dialog lets the user choose what columns they want to incl
 with the geometry columns selected on the left being ommitted from the properties table.\\
 \newline
 The user can also select the numeric scale of the decimal values of the geometries by tweaking the \textbf{Geometry numeric scale}
-option at the bottom of the dialog to a different number, the default value is \texbf{7}. This number represents the
+option at the bottom of the dialog to a different number, the default value is \textbf{7}. This number represents the
 number of decimal digits to the right  of the decimal point of a decimal number, e.g. \textit{47.4955184} has a numeric scale of
 7 because there are 7 numbers to the right of the decimal point of the number (this being the default numeric scale).
 This numeric scale is used while processing lat/lon values or WKT values. \\
@@ -142,7 +142,77 @@ More information on what a numeric scale is can be found here:
 \end{figure}
 
 \subsection{The Conversion Process}
-\lipsum[15-17]
+For converting the geospatial data to GeoJSON, the \href{https://github.com/bjornharrtell/jts2geojson}{jts2geojson} Java library was used. This library converts
+JTS geometries to GeoJSON (and vice-versa). It internally uses the JTS library to create the geometries and then utilizes those geometries to create GeoJSOn
+features out of.\\
+\newline
+A GeoJSON \mintinline{bash}{FeatureCollection} is first created with empty \mintinline{bash}{Features}. The Features are then dynamically added to the feature collection by
+iterating through the OpenRefine rows. The extension supports all types of Features, including:
+\begin{itemize}
+    \item Points
+    \item LineStrings
+    \item Polygons
+    \item MultiPoints
+    \item MultiLineStrings and
+    \item MultiPolygons
+\end{itemize}
+If only the latitude and longitude columns were selected, then the extension reads those values and creates simple Points out of them. These points are then created as Features
+and included in the GeoJSON file, along with their properties, as selected on the export dialog.\\
+\newline
+Here's an example of an exported GeoJSON data (with only a few Features):
+\begin{minted}[tabsize=2, breaklines, linenos]{json}
+{
+  "type" : "FeatureCollection",
+  "features" : [ {
+    "type" : "Feature",
+    "geometry" : {
+      "type" : "Point",
+      "coordinates" : [ 8.718769, 47.350209 ]
+    },
+    "properties" : {
+      "amenity" : "drinking_water",
+      "@id" : "8899069808"
+    }
+  }, {
+    "type" : "Feature",
+    "geometry" : {
+      "type" : "Point",
+      "coordinates" : [ 8.603137, 47.536676 ]
+    },
+    "properties" : {
+      "amenity" : "drinking_water",
+      "@id" : "2091396746"
+    }
+  }, {
+    "type" : "Feature",
+    "geometry" : {
+      "type" : "Point",
+      "coordinates" : [ 8.58352, 47.358378 ]
+    },
+    "properties" : {
+      "amenity" : "drinking_water",
+      "@id" : "698059005",
+      "operator" : "WVZ"
+    }
+  }]
+}
+\end{minted}
+Here is also the code that e.g. converts a Point WKT to a Point Features in GeoJSON:
+\begin{minted}[tabsize=2, breaklines, linenos]{java}
+    org.wololo.geojson.Point point = (org.wololo.geojson.Point) geometry;
+    double[] coordinates = point.getCoordinates();
+    double[] _coordinates = new double[]{
+            Math.round(coordinates[0] * scaleFactor) / scaleFactor,
+            Math.round(coordinates[1] * scaleFactor) / scaleFactor
+    };
+
+    org.wololo.geojson.Point _point = new org.wololo.geojson.Point(_coordinates);
+
+    features.add(new Feature(_point, properties));
+\end{minted}
+The scale factor corresponds to the numeric scale specified in the export dialog i.e. 10 in the power of the \textit{geometry numeric scale}.\\
+\newline
+At the end of the rows, all the features are added to the \mintinline{bash}{FeatureCollection} object and written to the GeoJSON file.
 \subsection{Testing}
 \lipsum[18-20]
 
