@@ -97,8 +97,53 @@ More information on installing extensions can be found \href{https://docs.openre
 OpenRefine's official documentation also includes an article on how to write extensions \href{https://docs.openrefine.org/technical-reference/writing-extensions}{here}.\\
 \newline
 \subsection{Design Decisions}
-\lipsum[18-20]
-\pagebreak
+\begin{table}
+    \begin{tabularx}{\textwidth}{| X | X |}
+        \hline
+        \textbf{Decision} & \textbf{Reason}\\[1cm]
+        \hline
+        The \href{https://github.com/bjornharrtell/jts2geojson}{jts2geojson} library is used for
+        converting JTS geometry to GeoJSON. & The \href{https://github.com/bjornharrtell/jts2geojson}{jts2geojson} library is
+        able to convert JTS geometries to GeoJSON and back. \\
+        \hline
+        The \href{https://github.com/locationtech/jts}{JTS Topology Suite} library is used to process the geometry objects. &
+        The \href{https://github.com/bjornharrtell/jts2geojson}{jts2geojson} requires JTS Geometry in order to be able to convert it to GeoJSON.
+        The latitude/longitude columns and WKT strings are used together with the JTS library to create JTS Geometry.
+        Points are created using their X and Y values into a JTS Point Geometry and WKT strings are converted to JTS geometry
+        using the \href{https://locationtech.github.io/jts/javadoc/org/locationtech/jts/io/WKTReader.html}{\mintinline{bash}{WKT Reader}}
+        JTS class. These geometries are then continously stored as GeoJSON features and at the end of the iteration,
+        they are added to the \mintinline{bash}{FeatureCollection}.
+        This \mintinline{bash}{FeatureCollection} is used as GeoJSON data for the exported GeoJSON file.\\
+        \hline
+        The Well-Known Text (WKT) geometry is used as the geometry representation format for exporting to GeoJSON. &
+        Any type of geometry object can be represented using WKT and it can be stored in a single
+        cell without having any dependencies to another cell or needing more than one cell.\\
+        \hline
+    \end{tabularx}
+    \caption{Design Decisions - GeoJSON Export}
+\end{table}
+\subsubsection{The Solution Stack}
+This extension was built using the Java programming language, version 8, for the back end. For the front-end portion,
+a combination of Javascript, the jQuery library, LESS and HTML was used. \\
+\newline
+\href{https://www.java.com/en/}{Java} is a powerful general-purpose programming language.
+It is used to develop desktop and mobile applications,
+big data processing, embedded systems, and so on.
+According to Oracle, the company that owns Java, Java runs on 3 billion devices worldwide, which makes Java one of the most popular programming languages. cite{WhatIsJava}\\
+\newline
+The reason why this plugin was chosen to be built and developed using Java is
+because of OpenRefine, it is programmed using Java,
+so all its extensions must also be written in Java (using OpenRefine\'s extension
+architecture). All of the OpenRefine extensions are developed inside the
+OpenRefine environment as a separate bundled directory and must use OpenRefine\'s
+native Java methods in order to be communicate with OpenRefine\'s core engine.\\
+It is also an Object-Oriented programming language, which runs under any operating system
+(because of its compiler) and uses inheritance and abstract methods (Object Oriented programming principles),
+which turned out to be useful and appropriate for the nature of this extension.\\
+\newline
+
+For the front-end, the usual front-end stack was used to develop the UI parts i.e. Javascript, jQuery, LESS and HTML.
+\pagebreak=
 \section{Implementation}
 \subsection{Overview}
 The extension adds a new export option to OpenRefine which allows the OpenRefine users to
@@ -115,7 +160,7 @@ include as properties for the GeoJSON features.\\
 \newline
 
 \begin{figure}[H]
-    \includegraphics[width=7cm]{./Figures/GeoJSON_Export/geojson_export_button.png}
+    \includegraphics[width=7cm]{./Figures/GeoJSON_Export/geojson_export_button}
     \caption{The GeoJSON export button, located on the top right of an OpenRefine project}
 \end{figure}
 
@@ -137,7 +182,7 @@ More information on what a numeric scale is can be found here:
 \href{https://docs.microsoft.com/en-us/sql/t-sql/data-types/precision-scale-and-length-transact-sql?view=sql-server-ver15}{https://docs.microsoft.com/en-us/sql/t-sql/data-types/precision-scale-and-length-transact-sql?view=sql-server-ver15}.
 
 \begin{figure}[H]
-    \includegraphics[width=\linewidth]{./Figures/GeoJSON_Export/geojson_export_dialog.png}
+    \includegraphics[width=\linewidth]{./Figures/GeoJSON_Export/geojson_export_dialog}
     \caption{The GeoJSON export dialog}
 \end{figure}
 
@@ -214,12 +259,124 @@ The scale factor corresponds to the numeric scale specified in the export dialog
 \newline
 At the end of the rows, all the features are added to the \mintinline{bash}{FeatureCollection} object and written to the GeoJSON file.
 \subsection{Testing}
-\lipsum[18-20]
-
+This extension includes some unit testing. The framework used for unit testing is the \href{https://testng.org/}{TestNG} framework.
+\subsection{Unit Testing}
+TestNG is a testing framework inspired from JUnit and NUnit. It is designed to cover all categories of testing.\\
+This extension contains minimal unit testing for some of its important functions and everytime the CI/CD pipeline is run in GitLab, the
+extension's unit tests are executed to see if everything is still working as expected.
 \pagebreak
 \section{Usage \& Examples}
-\lipsum[9-10]
 \subsection{Usage}
-\lipsum[18-20]
+\begin{enumerate}
+    \item Launch OpenRefine with the \textbf{GeoJSON Export} extension
+    \item Create a new project or open an existing one
+    \item Make sure there are atleast latitude/longitude columns or a WKT column consisting the data that needs to be exported to GeoJSON
+    \item Under the \textit{Export} drop-down, click on the \textit{GeoJSON (.geojson)...} option
+    \item In the export dialog, choose the latitude/longitude columns or the WKT column (or all of them)
+    \item Choose the columns that need to be included as properties to each of the GeoJSON features inside the FeatureCollection
+    \item Override the geometry numeric scale if necessary.
+    \item Choose a name for the \textit{.geojson} file and click on the \textit{Export} button at the bottom of the dialog
+\end{enumerate}
 \subsection{Examples}
-\lipsum[3-4]
+Here are some examples of GeoJSON exported data from OpenRefine using this extension:
+\begin{minted}[tabsize=2, breaklines, linenos]{json}
+{
+  "type" : "FeatureCollection",
+  "features" : [ {
+    "type" : "Feature",
+    "geometry" : {
+      "type" : "Point",
+      "coordinates" : [ 8.5740834, 47.556292 ]
+    },
+    "properties" : {
+      "end_date" : "mid C14",
+      "historic:civilization" : "medieval",
+      "historic" : "castle",
+      "access" : "yes",
+      "point_delimited" : "47.556292;8.574083",
+      "description" : "Nordöstlich über Teufen markanter, allseits steil abfallender Burghügel mit schwachen Mauerresten eines Turmes und der Umfassungsmauer. Sitz der Freiherren v. Teufen, erwiesen 1285. 1334 zerstört. (Quelle: Burgenverein.ch)",
+      "name:gsw" : "Hohen-Tüfen",
+      "ruins" : "yes",
+      "castle_type" : "defensive",
+      "name" : "Burgstelle Hohenteufen",
+      "@id" : "1862065036",
+      "wikipedia" : "de:Burgstelle Hohenteufen",
+      "wikidata" : "Q29932628",
+      "ele" : "568",
+      "start_date" : "late C13"
+    }
+  }, {
+    "type" : "Feature",
+    "geometry" : {
+      "type" : "Point",
+      "coordinates" : [ 7.0567095, 47.3659388 ]
+    },
+    "properties" : {
+      "name:de" : "Schloss Montvoie",
+      "historic" : "castle",
+      "point_delimited" : "47.365939;7.056710",
+      "ruins" : "yes",
+      "castle_type" : "stately",
+      "name" : "Château de Montvoie",
+      "name:en" : "Montvoie Castle",
+      "@id" : "1521546163",
+      "wikidata" : "Q6906665"
+    }
+  } ]
+}
+\end{minted}
+This GeoJSON document contains two Features of type \mintinline{bash}{Point}, their coordinates and some non-spatial properties that
+were extracted from OpenStreetMap.
+\begin{minted}[tabsize=2, breaklines, linenos]{json}
+{
+  "type" : "FeatureCollection",
+  "features" : [ {
+    "type" : "Feature",
+    "geometry" : {
+      "type" : "LineString",
+      "coordinates" : [ [ 7.7529493, 47.3816381 ], [ 7.7529443, 47.3816044 ] ]
+    },
+    "properties" : {
+      "historic" : "castle_wall",
+      "ruins" : "castle"
+    }
+  }, {
+    "type" : "Feature",
+    "geometry" : {
+      "type" : "MultiPolygon",
+      "coordinates" : [ [ [ [ 8.1404353, 46.1959036 ], [ 8.1404352, 46.195953 ], [ 8.1402542, 46.195952 ], [ 8.1401752, 46.1959494 ], [ 8.140174, 46.1958587 ], [ 8.140173, 46.1957775 ], [ 8.1404439, 46.1957792 ], [ 8.1404431, 46.1958362 ], [ 8.1403847, 46.1958358 ], [ 8.1403838, 46.1959033 ], [ 8.1404353, 46.1959036 ] ] ], [ [ [ 8.1404353, 46.1959036 ], [ 8.1404918, 46.195904 ], [ 8.1404928, 46.1958365 ], [ 8.1404731, 46.1958364 ], [ 8.1404431, 46.1958362 ], [ 8.1404353, 46.1958362 ], [ 8.1403847, 46.1958358 ], [ 8.1403838, 46.1959033 ], [ 8.1404353, 46.1959036 ] ] ] ]
+    },
+    "properties" : {
+      "addr:housename" : "Stockalperturm",
+      "historic" : "castle",
+      "building:levels" : "5",
+      "type" : "site",
+      "addr:postcode" : "3907",
+      "building" : "hotel",
+      "addr:city" : "Gondo",
+      "addr:housenumber" : "21",
+      "material" : "stone",
+      "castle_type" : "defensive",
+      "name" : "Stockalperturm",
+      "addr:street" : "Simplonstrasse",
+      "wikidata" : "Q443634"
+    }
+  }, {
+    "type" : "Feature",
+    "geometry" : {
+      "type" : "MultiPolygon",
+      "coordinates" : [ [ [ [ 6.8898688, 46.4696051 ], [ 6.8899728, 46.4696341 ], [ 6.8899767, 46.4696179 ], [ 6.8901071, 46.4696706 ], [ 6.890114, 46.4696591 ], [ 6.8902238, 46.4696794 ], [ 6.8902169, 46.4697111 ], [ 6.890367, 46.4697395 ], [ 6.8903758, 46.4697064 ], [ 6.8904591, 46.4697179 ], [ 6.8905003, 46.4695693 ], [ 6.8903934, 46.4695126 ], [ 6.8904191, 46.4694871 ], [ 6.8904434, 46.4694556 ], [ 6.8903476, 46.4694096 ], [ 6.8903023, 46.4694626 ], [ 6.890165, 46.4694052 ], [ 6.889967, 46.4693767 ], [ 6.889872, 46.4693709 ], [ 6.8898422, 46.4694431 ], [ 6.889793, 46.4695176 ], [ 6.8897694, 46.469509 ], [ 6.8897525, 46.4695302 ], [ 6.8897068, 46.469514 ], [ 6.8896702, 46.4695595 ], [ 6.8897096, 46.4695876 ], [ 6.8896953, 46.4696593 ], [ 6.889794, 46.4696821 ], [ 6.8898091, 46.469666 ], [ 6.8898688, 46.4696051 ] ], [ [ 6.8899697, 46.4695339 ], [ 6.8900081, 46.469478 ], [ 6.8901726, 46.4695437 ], [ 6.8901836, 46.4695256 ], [ 6.890302, 46.4695686 ], [ 6.8902779, 46.469617 ], [ 6.8899697, 46.4695339 ] ] ] ]
+    },
+    "properties" : {
+      "historic" : "castle",
+      "castle_type" : "defensive",
+      "name" : "Château de Blonay",
+      "wikipedia" : "fr:Château de Blonay",
+      "type" : "multipolygon",
+      "wikidata" : "Q684917"
+    }
+  } ]
+}
+\end{minted}
+This GeoJSON document contains Features of type \mintinline{bash}{LineString} and \mintinline{bash}{MultiPolygon},
+their coordinates and some non-spatial properties that were extracted from OpenStreetMap.

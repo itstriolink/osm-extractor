@@ -63,7 +63,7 @@ Prime Meridian.
 This Prime Meridian line runs vertically, north and south, right over the British Royal Observatory in
 Greenwich England, from the North Pole to the South Pole.
 As the vertical starting point for longitude, the Prime Meridian is numbered 0 degrees longitude. \cite{JourneyNorthLatitudeLongitude}
-\subsection{Spatial Objects as Well-Known Text (WKT)}
+\section{Spatial Objects as Well-Known Text (WKT)}
 Geospatial objects can be represented using the mark-up language called \href{https://www.ogc.org/standards/wkt-crs}{Well-Known Text (WKT)}.
 They are not case-sensitive and are used to represent geometry objects such as: Points, LineStrings, Polygons, MultiPoints etc.\\
 \newline
@@ -78,7 +78,7 @@ Here's some examples of WKT strings, adopted from \href{https://www.vertica.com/
     \item \mintinline{bash}{LINESTRING(1.5 2.45,3.21 4)} - Represents the line from the point (1.5,2.45) to the point (3.21,4)
     \item \mintinline{bash}{POLYGON((1 2,1 4,3 4,3 2,1 2))} - Represents a polygon (0.5 0.5,5 0,5 5,0 5,0.5 0.5) with a hole in it (1.5 1,4 3,4 1,1.5 1).
 \end{itemize}
-\subsection{Geospatial Data in GeoJSON}
+\section{Geospatial Data in GeoJSON}
 Another format of representing Geospatial Data using the famous JSON format is the \href{https://datatracker.ietf.org/doc/html/rfc7946}{GeoJSON format}.
 It is designed to represent simple geographical features, along with their non-spatial attributes.\\
 \newline

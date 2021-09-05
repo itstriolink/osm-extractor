@@ -1,11 +1,11 @@
 %%
-%% This is file `Seminar.cls', based on 'ECSthesis.cls', by Steve R. Gunn
+%% This is file `Main.cls', based on 'ECSthesis.cls', by Steve R. Gunn
 %% generated with the docstrip utility.
 %%
 %% Created by Steve R. Gunn, modified by Sunil Patel: www.sunilpatel.co.uk
 
 \NeedsTeXFormat{LaTeX2e}[1996/12/01]
-\ProvidesClass{Seminar}
+\ProvidesClass{Main}
               [2007/22/02 v1.0
    LaTeX document class]
 \def\baseclass{book}
@@ -342,4 +342,4 @@
   \@mainmatterfalse}
 \endinput
 %%
-%% End of file `Seminar.cls'.
+%% End of file `Main.cls'.

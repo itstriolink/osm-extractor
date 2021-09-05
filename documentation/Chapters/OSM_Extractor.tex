@@ -100,7 +100,64 @@ OpenRefine's official documentation also includes an article on how to write ext
 \newline
 \pagebreak
 \subsection{Design Decisions}
-\lipsum[18-20]
+\begin{table}
+    \begin{tabularx}{\textwidth}{| X | X |}
+        \hline
+        \textbf{Decision} & \textbf{Reason}\\[1cm]
+        \hline
+        The \href{https://github.com/topobyte/osm4j}{osm4j} library is used for unmarshalling the OpenStreetMap XML data &
+        The \href{https://github.com/topobyte/osm4j}{osm4j} library provides geometry and utility functions that are
+        useful for processing OpenStreetMap XML data and for querying the Overpass API,
+        turning it out to be a perfect fit for this extension\'s implementation.\\
+        \hline
+        The \href{https://github.com/locationtech/jts}{JTS Topology Suite} library is used to process the geometry objects. &
+        OpenStreetMap data is first converted to \textit{Simple Feature} geometry objects before inserting into OpenRefine (explained later in the document).
+        The \href{https://github.com/locationtech/jts}{JTS Topology Suite} provides useful classes and functions for dealing with such geometry objects (Points, LineStrings, Polygons etc).\\
+        \hline
+        The Well-Known Text (WKT) geometry representation format is used to represent the \textit{Simple Feature} geometry objects. &
+        Any type of \textit{Simple Feature} geometry object can be represented using WKT and it can be stored in a single
+        cell without having any dependencies to another cell or needing more than one cell.\\
+        \hline
+        \mintinline{bash}{Polygons} are not offered as a type of Geometry in the extension. &
+        Extracting Polygons from OpenStreetMap data... It is left to the user to choose what geometries are Polygons and
+        what remain as MultiPolygons TBD\\
+        \hline
+        \mintinline{bash}{out center;} is not supported as an Overpass QL command. &
+        The reason is because the \href{https://github.com/topobyte/osm4j}{osm4j} library is a library to process OpenStreetMap
+        XML data and not precisely data retrieved from the Overpass API (at least not entirely). Since the
+        \mintinline{xml}{<center>} attribute is more Overpass specific, the osm4j repository maintainers did not see it as a necessary
+        fit/addition to their library since it is more oriented towards Overpass and not native OpenStreetMap XML data.
+        Here is also the issue opened in the osm4j repository: \href{https://github.com/topobyte/osm4j/issues/3}{https://github.com/topobyte/osm4j/issues/3}
+        The interior point can be however calculated using the GREL function \mintinline{java}{interiorPoint()} that is added by this extension.
+        It accepts any type of WKT string and returns a Point WKT of the interior point of that geometry.\\
+        \hline
+        \mintinline{sql}{[out:json];} and \mintinline{sql}{[out:csv];} are not supported in the extension. & This extension deals with only OpenStreetMap
+        XML data and not with other types of representations. The \href{https://github.com/topobyte/osm4j}{osm4j} library also does not support reading
+        \textit{JSON} or \textit{CSV} OpenStreetMap data.
+    \end{tabularx}
+\caption{Design Decisions - OSM Extractor}
+\end{table}
+\subsubsection{The Solution Stack}
+This extension was built using the Java programming language, version 8, for the back end. For the front-end portion,
+a combination of Javascript, the jQuery library, LESS and HTML was used. \\
+\newline
+\href{https://www.java.com/en/}{Java} is a powerful general-purpose programming language.
+It is used to develop desktop and mobile applications,
+big data processing, embedded systems, and so on.
+According to Oracle, the company that owns Java, Java runs on 3 billion devices worldwide, which makes Java one of the most popular programming languages. \cite{WhatIsJava}\\
+\newline
+The reason why this plugin was chosen to be built and developed using Java is
+because of OpenRefine, it is programmed using Java,
+so all its extensions must also be written in Java (using OpenRefine\'s extension
+architecture). All of the OpenRefine extensions are developed inside the
+OpenRefine environment as a separate bundled directory and must use OpenRefine\'s
+native Java methods in order to be communicate with OpenRefine\'s core engine.\\
+It is also an Object-Oriented programming language, which runs under any operating system
+(because of its compiler) and uses inheritance and abstract methods (Object Oriented programming principles),
+which turned out to be useful and appropriate for the nature of this extension.\\
+\newline
+
+For the front-end, the usual front-end stack was used to develop the UI parts i.e. Javascript, jQuery, LESS and HTML.
 \pagebreak
 \section{Implementation}
 \subsection{Overview}
@@ -138,9 +195,8 @@ the request is finished (with success or not). Some Overpass QL queries can take
 the user can abort the query anytime using the\textit{Abort} button below the loading icon. If they abort the request,
 the user is sent back to the import (index) page of OpenRefine.\\
 \newline
-After the query finishes processing, the OpenStreetMap XML data is then stored in memory and ready to be processed and imported into a new project.
-The library used to unmarshall the OpenStreetMap XML data into Java classes (of nodes, ways and relations) is the \href{https://github.com/topobyte/osm4j}{osm4j} library which also
-provides a lot of geometry and utility functions that are useful for processing OpenStreetMap XML data.\\
+After the query finishes processing, the OpenStreetMap XML data is then stored in memory and ready to be processed and
+imported into a new project (made possible by the osm4j library).
 \newline
 When all the above tasks are finished, the user is presented with a table of tags and some parsing options below where they
 can select what types of Geometry they want to include in the project and also some other settings. The table contains
@@ -240,10 +296,60 @@ This function is useful for TBD
 
 \pagebreak
 \subsection{Testing}
-\lipsum[18-20]
+This extension includes some unit testing. The framework used for unit testing is the \href{https://testng.org/}{TestNG} framework.
+\subsection{Unit Testing}
+TestNG is a testing framework inspired from JUnit and NUnit. It is designed to cover all categories of testing.\\
+This extension contains minimal unit testing for some of its important functions and everytime the CI/CD pipeline is run in GitLab, the
+extension's unit tests are executed to see if everything is still working as expected.
+\pagebreak
 \section{Usage \& Examples}
-\lipsum[9-10]
 \subsection{Usage}
-\lipsum[18-20]
+\begin{enumerate}
+    \item Launch OpenRefine with the \textbf{OSM Extractor} extension
+    \item In the index page, choose \textit{OpenStreetMap (Overpass)} from the import options
+    \item Choose another Overpass instance or leave the default one in the select list
+    \item Enter an Overpass QL query inside the text area
+        \subitem Make sure you test the query inside \href{https://overpass-turbo.eu/}{Overpass Turbo} to get a clearer
+        picture of the data before using it in the extension.
+    \item Click on the \textit{Next} button and wait for the query to be finished (It can be aborted anytime by clicking on the \textit{Abort} button)
+    \item Choose the tags you want to include in the OpenRefine project and override the column names for each tag if necessary
+    \item Choose the geometries to include, some of them are automatically selected
+    \item Override the \textit{Geometry numeric scale} if necessary, choose a project name and click on the \textit{Create Project} button
+\end{enumerate}
 \subsection{Examples}
-\lipsum[3-4]
+Here are some Overpass QL examples that were highly used while developing \& testing this extension:
+\begin{minted}[tabsize=2, breaklines, linenos]{sql}
+area["name"="Prishtinë"];
+(
+  nwr[amenity="cafe"](area);
+);
+out body;
+\end{minted}
+This \href{https://overpass-turbo.eu/s/1aTT}{query} returns all the cafe bars in Prishtina, Kosovo.
+It returns only points as no recurse function was used to produce the full result set.
+\begin{minted}[tabsize=2, breaklines, linenos]{sql}
+area["name"="Schweiz/Suisse/Svizzera/Svizra"];
+(
+  nwr[historic~"castle|tower"](area);
+  nwr[historic=archaeological_site][site_type=fortification](area);
+);
+out meta; >; out skel qt;
+\end{minted}
+This \href{https://overpass-turbo.eu/s/1aTT}{query} returns all the castles of Switzerland, including their OSM metadata.
+\begin{minted}[tabsize=2, breaklines, linenos]{sql}
+area["name"="Los Angeles"];
+(
+  nwr[amenity=restaurant](area);
+);
+out body; >; out skel qt;
+\end{minted}
+This \href{https://overpass-turbo.eu/s/1aTR}{query} returns all the restaurants in Los Angeles, California, without the OSM metadata.
+\begin{minted}[tabsize=2, breaklines, linenos]{sql}
+area["name"="Chur"];
+(
+  nwr[highway=residential](area);
+)
+(._;>;);
+out body;
+\end{minted}
+This \href{https://overpass-turbo.eu/s/1aTV}{query} returns all the residential highways (or streets used for local traffic) inside Chur, Switzerland.
