@@ -248,7 +248,34 @@ while processing lat/lon values or WKT values. \\
 More information on what a numeric scale is can be found here:
 \href{https://docs.microsoft.com/en-us/sql/t-sql/data-types/precision-scale-and-length-transact-sql?view=sql-server-ver15}{https://docs.microsoft.com/en-us/sql/t-sql/data-types/precision-scale-and-length-transact-sql?view=sql-server-ver15}.
 \subsubsection{Conversion to Simple Features Geometry}\label{sec:conversion-to-simple-features-geometry}
-\lipsum[21-23]
+When the OpenStreetMap XML data is received, it is received as nodes, ways and relations. This extension however, converts such
+elements to \href{https://www.ogc.org/standards/sfa}{Simple Feature Geometry} before inserting it into OpenRefine.\\
+\newline
+In the parsing options, at the bottom, there exist the types of Geometries to include in the project, they are all part of the \textit{Simple Feature} geometry objects:
+\begin{itemize}
+    \item Points (as lat/lon, as delimited text and as WKT)
+    \item LineStrings as WKT
+    \item MultiLineStrings and
+    \item MultiPolygons
+\end{itemize}
+To convert such data into \textit{Simple Feature} geometry, a combination of the \href{https://github.com/topobyte/osm4j}{osm4j}
+(it has some geometry and utility functions essential for the conversion) and
+\href{https://github.com/locationtech/jts}{JTS Topology Suite} (for providing \textit{Simple Feature} geometry classes and functions) library is used.\\
+\newline
+Here's the Java code that e.g. does the conversion of an OSM node to a JTS \mintinline{bash}{Point} Geometry:
+\begin{minted}[breaklines, linenos, tabsize=2]{java}
+    NodeBuilder nodeBuilder = new NodeBuilder();
+    osmExtractor.addPoint(nodeBuilder.build(node), node.getId(), OsmModelUtil.getTagsAsMap(node), node.getMetadata());
+\end{minted}
+This portion of code uses osm4j\'s NodeBuilder class to build a JTS Point Geometry. Other parameters are necessary attributes for the Point such as:
+the identifier, it\'s OSM tags and it\'s metadata.\\
+\newline
+Creating \mintinline{bash}{LineStrings}, \mintinline{bash}{MultiLineStrings} and \mintinline{bash}{MultiPolygons} is not
+as straightforward as creating \mintinline{bash}{Points}, hence a combination of methods is used to make such a conversion possible.
+The library of osm4j handles a lot of the logic of those conversions (geometry functions) while the JTS library stores
+them in their appropriate Java classes as Geometry objects. Other Java classes provided by this extension bundle up the JTS geometries along
+with their OSM attributes in a single object. This makes it easy for storing the whole OSM element (and it\'s attributes)
+along with it\'s \textit{Simple Feature} geometry attributes.
 \subsection{Creating the Project in OpenRefine}
 After all the desired tags have been selected and the geometries have been included, the user can choose a
 name for the newOpenRefine project and select the \textit{Create Project} button at the top right of the
@@ -262,7 +289,7 @@ and \textit{longitude} that contain the value of X and Y of the points. Moreover
 another column called \textit{point\_delimited} is added containing latitude/longitude columns, separated with
 the selected separator in the mapping options. Finally, there will be the \textit{WKT} column which contains
 the WKT string for the geometry. All of the values of these extra columns (latitude, longitude, WKT) have the precision scale of the one that was entered in
-the mapping options.\\
+the mapping options. The project\'s description also consists of the Overpass QL query that was entered initially.\\
 \newline
 Some of the values have a green color instead of the native black one, this means that the data type of those values is other
 than text i.e.\ number, date or boolean.
