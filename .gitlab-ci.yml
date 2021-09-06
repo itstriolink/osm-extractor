@@ -16,6 +16,7 @@ documentation:
       "pdflatex -synctex=1 --shell-escape -interaction=nonstopmode Main.tex",
       "bibtex Main",
       "pdflatex -synctex=1 --shell-escape -interaction=nonstopmode Main.tex"
+      "pdflatex -synctex=1 --shell-escape -interaction=nonstopmode Main.tex"
       ]
   artifacts:
     paths:
