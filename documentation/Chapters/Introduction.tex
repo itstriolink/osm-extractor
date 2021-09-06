@@ -3,10 +3,12 @@ The documentation for this project is split into four main parts.
 The first chapter gives an introduction to some important features, technologies \& tools, keywords and notations that are crucial to this project.
 It also covers the goals \& requirements that this project was initially set to meet.\\
 \newline
-The second chapter gives an overview and more thorough explanation on OpenRefine, the low code development platform for which the extensions have been built. TBD\\
+The second chapter gives an overview and more thorough description of OpenRefine,
+the low code development platform for which the extensions have been built.
+It describes its functionality, features and its extension architecture. \\
 \newline
-
-The third (or main) chapter is split into two chapters for each of the extensions. These chapters explain about the actual technical implementation aspects of the extensions.
+The third (or main) chapter is split into two chapters for each of the extensions.
+These chapters explain about the actual technical implementation aspects of the extensions.
 It mostly explains about the important methods/approaches that were used to achieve the goal of these extensions and the reason why those methods were decided to be used.
 It also explains about the main technical notations about the project, what they mean and how they were used in the benefit of this project work.\\
 \newline
@@ -15,21 +17,22 @@ It also wraps up with a conclusion about the project and my personal reflection 
 \pagebreak
 \section{Requirements}
 The main objective for this project is implementing different spatial data representations in OpenRefine and also integrating OpenStreetMap data into
-a new OpenRefine project (one of the extensions). With the help of the other extension, geospatial data can be easily exported to the \textit{GeoJSON} format.\\
+a new OpenRefine project (one of the extensions).
+With the help of the other extension, geospatial data can be easily exported to the \textit{GeoJSON} format.\\
 \newline
 The main tasks include:
 \begin{itemize}
    \item Creating an extension for OpenRefine that uses the Overpass API to fetch OpenStreetMap data and then integrate it into a new OpenRefine project.
-    \subitem The OpenStreetMap data has to be converted to \textit{Simple Feature} Geometry (explained later in the document).
-    \subitem The XML data (received from Overpass) has to be converted to tabular data in order to comply with the OpenRefine schema.
-   \item Creating an extension for OpenRefine that exports geospatial data into the \textit{GeoJSON} format.
-    \subitem  The data can belong to any type of geometry and has to be of valid \textit{GeoJSON} format after the conversion.
+    \subitem The OpenStreetMap data has to be converted to \textit{Simple Feature} Geometry (explained later in the document)
+    \subitem The XML data (received from Overpass) has to be converted to tabular data in order to comply with the OpenRefine schema
+   \item Creating an extension for OpenRefine that exports geospatial data into the \textit{GeoJSON} format
+    \subitem  The data can belong to any type of geometry and has to be of valid \textit{GeoJSON} format after the conversion
 \end{itemize}
 The extensions stick to the official \href{https://docs.openrefine.org/technical-reference/writing-extensions}{OpenRefine development rules and guidelines for writing extensions}. They are licensed
 under the \href{https://opensource.org/licenses/MIT}{MIT License}.
 \pagebreak
 \section{The Low Code Development Platform - OpenRefine}
-OpenRefine (previously Google Refine) is a powerful tool for working with messy data: cleaning it; transforming it from one format into another; and extending it with web services and external data. \cite{AboutOpenRefine}\\
+OpenRefine (previously Google Refine) is a powerful tool for working with messy data: cleaning it; transforming it from one format into another; and extending it with web services and external data.~\cite{AboutOpenRefine}\\
 \newline
 OpenRefine offers an extension architecture where users can extend the functionality of OpenRefine by creating various extensions.
 The main requirements of this project are to build two extensions using OpenRefine's extension architecture in order to extend OpenRefine's functionality to
@@ -41,7 +44,7 @@ data into the GeoJSON format (\hyperref[ch:the-geojson-export-extension]{GeoJSON
 The requirements of this project all work closely with spatial data and forms of its representation.\\
 \newline
 Spatial data, also known as geospatial data, is a term used to describe any data related to or containing information
-about a specific location on the Earth\'s surface. \cite{AboutGeoSpatialData}\\
+about a specific location on the Earth\textquotesingle s surface.~\cite{AboutGeoSpatialData}\\
 \newline
 Geospatial data is data about objects that have a location on the surface of the Earth.
 Locations can be static or dynamic. Static data are locations that don't move such as restaurants, roads or buildings.
@@ -85,7 +88,7 @@ OpenStreetMap is freely accessible by the people around the world on \href{https
 \newline
 \begin{figure}[H]
     \centering
-    \includegraphics[width=5cm]{./Figures/Introduction/openstreetmap_logo.png}
+    \includegraphics[width=5cm]{./Figures/Introduction/openstreetmap_logo}
     \caption{The OpenStreetMap logo}
 \end{figure}
 \pagebreak
@@ -93,7 +96,7 @@ OpenStreetMap is freely accessible by the people around the world on \href{https
 \href{https://wiki.openstreetmap.org/wiki/Overpass_API}{The Overpass API} (formerly known as OSM Server Side Scripting,
 or OSM3S before 2011) is a read-only API that serves up custom selected parts of the OSM map data.
 It acts as a database over the web: the client sends a query to the API and gets back the data set that corresponds to
-the query. \cite{WhatIsOverpass}\\ The Overpass API is mainly optimized for querying OpenStreetMap elements instantly
+the query.~\cite{WhatIsOverpass}\\ The Overpass API is mainly optimized for querying OpenStreetMap elements instantly
 which are selected by search criteria e.g. tags, locations etc.\\
 \newline
 In this project, the Overpass API is used to fetch OpenStreetMap data (elements) by using the
@@ -102,7 +105,7 @@ retrieve the desired data from OpenStreetMap.\\
 \newline
 \begin{figure}[H]
     \centering
-    \includegraphics[width=5cm]{./Figures/Introduction/overpass_api.png}
+    \includegraphics[width=5cm]{./Figures/Introduction/overpass_api}
     \caption{The Overpass API logo}
 \end{figure}
 \pagebreak
@@ -118,6 +121,6 @@ GeoJSON supports the following feature types:
     \item Multipart collections of point, line string, or polygon features
 \end{itemize}
 GeoJSON features are not only used to represent entities of the physical world. For example, mobile routing and navigation apps
-might describe their service coverage using GeoJSON. \cite{ArcGISGeoJSON}\\
+might describe their service coverage using GeoJSON.~\cite{ArcGISGeoJSON}\\
 \newline
 One of the extensions on this project does the job of converting OpenRefine data (geospatially represented) into the \href{https://geojson.org/}{GeoJSON (.geojson)} format.

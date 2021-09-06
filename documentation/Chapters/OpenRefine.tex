@@ -3,7 +3,7 @@
 \href{https://openrefine.org/}{OpenRefine} is an application tool that runs locally as a stand-alone application on your computer and uses a web browser
 as graphical user interface (GUI). It iss written in \href{https://www.java.com/en/}{Java} and available as open-source and has its roots in managing a knowledge base,
 like \href{https://www.wikidata.org/wiki/Wikidata:Main_Page}{Wikidata}. There are other open source alternatives around such as \href{https://workbenchdata.com/}{Workbench}, which follows a similar concept but
-is written in Python. \cite{OpenRefineCoreDump}\\
+is written in Python.~\cite{OpenRefineCoreDump}\\
 \newline
 OpenRefine can do things such as:
 \begin{itemize}
@@ -17,7 +17,7 @@ OpenRefine can do things such as:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=7cm]{./Figures/OpenRefine/openrefine_logo.png}
+    \includegraphics[width=7cm]{./Figures/OpenRefine/openrefine_logo}
     \caption{The OpenRefine Logo}
 \end{figure}
 
@@ -29,9 +29,9 @@ It consists of a main grid (or spreadsheet) with the tabular data you are curren
 This spreadsheet changes every time you perform an action such as filtering or creating different facets.
 The left part of the GUI has a tab for showing each facet/filter that is currently affecting your data set.
 This section offers the possibility of quickly changing facets and filters and every time you perform such action,
-the spreadsheet reflects the changes. TBD
+the spreadsheet reflects the changes.~\cite{OpenRefineCoreDump}\\
 \begin{figure}[H]
-    \includegraphics[width=\linewidth]{./Figures/OpenRefine/openrefine_gui.png}
+    \includegraphics[width=\linewidth]{./Figures/OpenRefine/openrefine_gui}
     \caption{The OpenRefine GUI}
 \end{figure}
 OpenRefine offers many powerful features such as the \textbf{Undo/Redo} feature or the low coding functions which are essential for efficient bulk data cleaning and transformation.
@@ -60,7 +60,7 @@ GREL is an expression language specific to OpenRefine, which is similar to JavaS
     \item Iterating over elements etc.
     \item GREL is going to be used in our case to access the HTML DOM and
     \item select the appropriate data out of the HTML page for scraping.
-\end{itemize} \cite{OpenRefineCoreDump}\\
+\end{itemize}~\cite{OpenRefineCoreDump}\\
 \newline
 One of the extensions of this project includes adding a new GREL function called \mintinline{java}{interiorPoint()}
 which serves as a function to compute the interior point of a Geometry.

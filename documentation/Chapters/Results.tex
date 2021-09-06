@@ -5,18 +5,18 @@ OpenRefine and also integrate OpenStreetMap data into OpenRefine.
 \subsection{OSM Extractor Results}
 Integrating OpenStreetMap data into OpenRefine using the Overpass QL API:
 \begin{itemize}
-    \item Create an OpenRefine-friendly extension using OpenRefine\'s extension architecture
+    \item Create an OpenRefine-friendly extension using OpenRefine\textquotesingle s extension architecture
     \item Use the Overpass API and Overpass QL queries to extract custom OpenStreetMap data
     \item Choose what tags to include in the OpenRefine project and also what type of geometry objects
     \item Assign the correct data types to the columns (text, number, date, column)
     \item Separate tags depending on their purpose and meaning. They can be \textit{Identifier, Main, Metadata or Other} tags
     \item Create user-friendly components throughout the whole extension
-    \item Use OpenRefine\'s core engine to create projects and log everything correctly
+    \item Use OpenRefine\textquotesingle s core engine to create projects and log everything correctly
     \item Bundle, release and test the extension correctly and continuously using iterative \href{https://gitlab.com/labiangashi/osm-extractor/-/releases}{releases}
     \item Use CI/CD pipeline features to build the documentation and also build, test and \href{https://gitlab.com/labiangashi/osm-extractor/-/releases}{release new versions} of the extension
     \item Create \href{https://gitlab.com/labiangashi/osm-extractor/-/issues}{issues} and
     \href{https://gitlab.com/labiangashi/osm-extractor/-/milestones}{milestones} in the code repository host website to correctly describe and
-    track the project\'s process and features
+    track the project\textquotesingle s process and features
 \end{itemize}
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{./Figures/Results/osm_extractor_results}
@@ -25,15 +25,15 @@ Integrating OpenStreetMap data into OpenRefine using the Overpass QL API:
 \subsection{GeoJSON Export Results}
 Exporting OpenRefine data to the GeoJSON (.geojson) format:
 \begin{itemize}
-    \item Create an OpenRefine-friendly extension using OpenRefine\'s extension architecture
+    \item Create an OpenRefine-friendly extension using OpenRefine\textquotesingle s extension architecture
     \item Use the Well-Known Text spatial data representation format to represent geometry objects
     \item Create a user-friendly export dialog for exporting the data to GeoJSON
-    \item Use OpenRefine\'s core engine to export the data and log everything correctly
+    \item Use OpenRefine\textquotesingle s core engine to export the data and log everything correctly
     \item Bundle, release and test the extension correctly and continuously using iterative \href{https://gitlab.com/labiangashi/geojson-export/-/releases}{releases}
     \item Use CI/CD pipeline features to build the documentation and also build, test and \href{https://gitlab.com/labiangashi/geojson-export/-/releases}{release new versions} of the extension
     \item Create \href{https://gitlab.com/labiangashi/geojson-export/-/issues}{issues} and
     \href{https://gitlab.com/labiangashi/geojson-export/-/milestones}{milestones} in the code repository host website to correctly describe and
-    track the project\'s process and features
+    track the project\textquotesingle s process and features
 \end{itemize}
 \begin{minted}[tabsize=2, breaklines, linenos]{json}
 {
@@ -94,5 +94,15 @@ expand my knowledge on OpenStreetMap data and the Overpass API.\\
 Working with geospatial data was also a great addition to my knowledge stack, since I had to work closely with geospatial data and open standards,
 research needed to be done before making decisions on the extensions. This made me understand geospatial data and objects in a broader sense.\\
 \newline
-Finally, this thesis would have been much harder to implement if libraries like the ones that were used in this project didn\'t exist. The work and effort
+Finally, this thesis would have been much harder to implement if libraries like the ones that were used in this project didn\textquotesingle t exist. The work and effort
 that would need to be put in implementing the extensions would expand and it would definitely question the feasibility of such a project.
+\section{Outlook}
+\subsection{The OSM Extractor Extension}
+The current version of the \textbf{OSM Extractor} extension successfully utilizes the Overpass API to integrate OpenStreetMap
+data into a new OpenRefine project. Future versions can be improved by providing an option that would continously sync that same OpenStreetMap data
+with the new updates in OpenStreetMap. All the records would need to have their unique identifier stored, in order to know if they wre updated or if new
+OpenStreetMap elements were added in OpenStreetMap. This feature would need a \textit{Sync} button somewhere on the project
+where the user would click every now and then (depending on when they want to update the data) and all the new/updated data would be re-integrated in the same OpenRefine project.
+\subsection{The GeoJSON Export Extension}
+The \textbf{GeoJSON Export} extension is able to successfully export any type of \textit{Simple Feature} geometry object into GeoJSON, except the \mintinline{bash}{GeometryCollection} object.
+Future versions of this extension could consider adding that type of Geometry as well into the supported GeoJSON geometry types.
