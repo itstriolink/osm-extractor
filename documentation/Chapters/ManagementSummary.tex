@@ -1,8 +1,7 @@
 \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 \addtotoc{Management Summary}
 \chapter*{Management Summary}
-In this project, we try to incorporate spatial data representations in OpenRefine by the examples of integrating
-OpenStreetMap data into OpenRefine and being able to export OpenRefine data to the GeoJSON (.geojson) format.
+In this project, we try to incorporate spatial data representations in OpenRefine as defined by the \href{https://www.ogc.org/standards/sfa}{OGC Simple Feature Access} geometry types, and by encoding them as a \href{https://www.ogc.org/standards/wkt-crs}{Well-Known Text (WKT)} or as columns containing latitude/longitude coordinates. These extensions extend OpenRefine to import OpenStreetMap data, to process spatial data, and to export this data in the GeoJSON format.
 Two extensions are built for achieving such goals.
 \section*{Goals}
 \subsection*{The OSM Extractor Extension}
@@ -28,8 +27,15 @@ For the GeoJSON Export extension, these are the goals:
 \pagebreak
 \section*{Results}
 \subsection*{The OSM Extractor Extension}
-The extension has been successfully developed using OpenRefine\textquotesingle s extension architecture and is able to successfully
-integrate OpenStreetMap data (as Simple Features) into a new OpenRefine project.
+The OSM Extractor extension has been
+successfully implemented and is able to fully integrate
+OSM data represented as a geometry of type Point,
+LineString, MultiLineString or MultiPolygon. OSM tags
+(attributes) are also included whereas main tags are
+sorted to the beginning. It also includes a GREL
+function named "interiorPoint()" that extracts the
+center point of a geometry, this allows for easier
+integration e.g. withWikidata.
 \begin{figure}[H]
         \includegraphics[width=\textwidth]{./Figures/ManagementSummary/osm_extractor_overpass_query}
         \caption{OpenStreetMap data for all the drinking water amenities in Zürich, Switzerland, taken from \href{http://overpass-turbo.osm.ch/}{Overpass Turbo CH}}
@@ -39,8 +45,10 @@ integrate OpenStreetMap data (as Simple Features) into a new OpenRefine project.
     \caption{OpenRefine project created using the OSM Extractor extension, containing geometry objects for all the drinking water amenities in Zürich, Switzerland}
 \end{figure}
 \subsection*{The GeoJSON Export Extension}
-The extension has been successfully developed using OpenRefine\textquotesingle s extension architecture and is able to successfully export
-geospatial data of an OpenRefine project in the GeoJSON (.geojson) format.
+The extension has been successfully developed using OpenRefine\textquotesingle s extension architecture and is able to create a GeoJSON file while letting the
+user choose the columns for geometry and columns for geometry properties. In
+addition, the decimal digits of the coordinates can be
+overridden.
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{./Figures/ManagementSummary/osm_extractor_project}
     \caption{An OpenRefine project containing data for all the drinking water amenities in Zürich, Switzerland}
@@ -104,10 +112,12 @@ As seen in the JSON snippet above, a \mintinline{bash}{FeatureCollection} GeoJSO
 \mintinline{bash}{Points} from the OpenRefine project, along with their non-spatial attributes (\textit{amenity}, \textit{@timestamp}, \textit{@id} etc.)
 \pagebreak
 \section*{Future Outlook}
+Contributions to the OpenRefine core project are also in the scope.
 \subsection*{The OSM Extractor Extension}
-Future versions can be improved by providing an option that would continously sync that same OpenStreetMap data
-with the new updates in OpenStreetMap. The user would need a \textit{Sync} button on the OpenRefine project which would
-sync the current data with the latest updates/additions on the OpenStreetMap database.
+Future versions of OSM Extractor could save the
+Overpass query, similar to a saved database connection (connection string). Or it
+could allow synchronization to keep an OpenRefine
+project up-to-date with OSM. The user would need a \textit{Sync} button on the OpenRefine project which would sync the current data with the latest updates/additions on the OpenStreetMap database.
 \subsection*{The GeoJSON Export Extension}
 Future versions of this extension could consider adding the  \mintinline{bash}{GeometryCollection} Geometry object
 into the supported GeoJSON geometry types. All the other GeoJSON Geometry types are supported in the current version.

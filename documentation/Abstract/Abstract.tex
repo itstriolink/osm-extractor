@@ -1,19 +1,11 @@
-The need of supporting and integrating geospatial data into large applications that deal with data has increased rapidly over the last years. This fact automatically indicates to us that the geospatial data usage and popularity has also increased along with its need.
-A lot of non-profit organizations and consortiums around the globe continuously contribute to and support the creation of
-various geospatial technologies for simplifying the access and usage of geospatial data and location information. They also contribute to creating data formats
-for representing geometry objects in order to standardize the access and exchange of such data.\\
+The need to integrate geospatial data into large data-driven applications has increased
+rapidly over the last years. This automatically indicates to us that the geospatial data usage and popularity has also increased. A lot of non-profit organizations and consortiums around the globe continuously contribute to and support the creation of various geospatial technologies for simplifying the access and usage of geospatial data and location information. They also contribute to creating open standard data formats for representing geometry objects in order to standardize the access and exchange of such data. Along with the demand of integrating geospatial data into large data-driven applications, new tools have also emerged.\\
 \newline
-OpenRefine is a low code development platform and a tool for working with messy data.
-It provides various features for
-data transformation and cleaning, including the extension of data with web services and external data.
-It also has an extension architecture that allows developers to add their own extensions to an existing OpenRefine application.
-Extensions can extend the functionality of OpenRefine by offering new import options, new functions, new export formats etc.\\
+\href{https://openrefine.org/}{OpenRefine} is a low code development platform and a data integration tool for working with potentially messy data.
+It provides various features for data transformation and cleaning, including the blending of data with web services and external data. It also includes its own scripting language, called the \href{https://docs.openrefine.org/manual/grel}{"General Refine Expression Language" (GREL)} - hence a low code development platform - which allows users to manage/transform their data with functions such as string processing, HTML parsing, JSON parsing, web scraping etc. OpenRefine also has an extension architecture that allows users to install new extensions, and developers to add functionality using Java. Extensions can extend the functionality of OpenRefine by offering new import options, new functions, new export formats etc. Currently, OpenRefine cannot process geodata and does not support services for accessing geodata sources such as \href{https://www.openstreetmap.org/}{OpenStreetMap (OSM)}. OpenStreetMap is the most popular free map in the world.\\
 \newline
 The idea behind this project is to create two OpenRefine extensions using OpenRefine\textquotesingle s extension architecture in order to incorporate
-different spatial data representations in OpenRefine by the example of providing the users with the feature of exporting their data to the GeoJSON format
-and also by offering a new import Option in OpenRefine that allows the users to integrate OpenStreetMap data directly into a new OpenRefine project.\\
-\newline
-The extensions utilizes many geospatial libraries around the net and open geospatial data formats (or representations) in order to deliver useful and efficient features to the users.\\
+different spatial data representations in OpenRefine as defined by the \href{https://www.ogc.org/standards/sfa}{OGC Simple Feature Access} geometry types, and by encoding them as a \href{https://www.ogc.org/standards/wkt-crs}{Well-Known Text (WKT)} or as columns containing latitude/longitude coordinates. These extensions extend OpenRefine to import OpenStreetMap data, to process spatial data, and to export this data in the GeoJSON format. The extensions utilize many geospatial libraries and open geospatial data formats (or representations) in order to deliver compliant and useful features to the users.\\
 \newline
 
 Keywords: \textit{OpenRefine, OpenStreetMap, Overpass API, GeoJSON, Simple Features, geospatial data, latitude, longitude, WKT}
