@@ -239,11 +239,11 @@ Refine.OSMImportingController.prototype._updatePreview = function () {
                         var indexHeaderCell = $('<td>').addClass("column-header").html(" ").appendTo(tagsHeaderCells);
                         var tagHeaderCell = $('<td>').addClass("column-header").html("Name").appendTo(tagsHeaderCells);
                         var newColumnHeaderCell = $('<td>').addClass("column-header").html("Column name").appendTo(tagsHeaderCells);
-                        var descriptionHeaderCell = $('<td>').addClass("column-header").html("Type").appendTo(tagsHeaderCells);
+                        var descriptionHeaderCell = $('<td>').addClass("column-header").html("Description").appendTo(tagsHeaderCells);
                         for (var i = 0; i < tags.length; i++) {
                             var column = tags[i];
                             var name = column.name;
-                            var type = column.type;
+                            var description = column.description;
 
                             var row = $('<tr>')
                                 .addClass("osm-extractor-dialog-row")
@@ -267,7 +267,7 @@ Refine.OSMImportingController.prototype._updatePreview = function () {
                             $('<input>')
                                 .attr('type', 'checkbox')
                                 .attr("id", "tagCheckbox-" + i)
-                                .prop("checked", ["Identifier", "Metadata", "Main"].indexOf(type) >= 0)
+                                .prop("checked", ["Identifier", "Metadata", "Main"].indexOf(description) >= 0)
                                 .attr("class", "includeTagCheckbox")
                                 .attr("rowIndex", i)
                                 .appendTo(tagNameDiv);
@@ -285,7 +285,7 @@ Refine.OSMImportingController.prototype._updatePreview = function () {
                             $('<input>')
                                 .attr('type', 'text')
                                 .attr("class", "newColumnName")
-                                .attr("disabled", ["Identifier", "Metadata", "Main"].indexOf(type) === -1)
+                                .attr("disabled", ["Identifier", "Metadata", "Main"].indexOf(description) === -1)
                                 .attr("rowIndex", i)
                                 .val(name)
                                 .appendTo(newColumnNameDiv);
@@ -294,8 +294,9 @@ Refine.OSMImportingController.prototype._updatePreview = function () {
                             var descriptionDiv = $('<div>').addClass("data-table-cell-content").appendTo(descriptionCell);
 
                             $('<div>')
-                                .text(type)
+                                .text(description)
                                 .attr("rowIndex", i)
+                                .attr("class", "newColumnDescription")
                                 .appendTo(descriptionCell);
                         }
                     }
@@ -364,13 +365,15 @@ Refine.OSMImportingController.prototype._createProject = function () {
     $('#raw-query-response-table tbody tr.tagRow').each(function () {
         var row = $(this);
         var checkbox = row.find('input.includeTagCheckbox')[0];
-        var osmTag = row.find('label.osmTagName').html();
+        var osmTag = row.find('label.osmTagName').text();
         var newColumnName = row.find('input.newColumnName').val();
+        var newColumnDescription = row.find('div.newColumnDescription').text();
 
         if (checkbox && checkbox.checked) {
             tags.push({
                 osmTag,
                 newColumnName,
+                newColumnDescription
             });
         }
     });

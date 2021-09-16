@@ -36,7 +36,6 @@ function registerCommands() {
     logger.trace("Initializing OSM Extractor commands...");
     var RefineServlet = Packages.com.google.refine.RefineServlet;
     RefineServlet.registerCommand(module, "get-overpass-instances", new Packages.com.labiangashi.refine.osmextractor.commands.GetInstancesCommand());
-    RefineServlet.registerCommand(module, "add-osm-data-to-project", new Packages.com.labiangashi.refine.osmextractor.commands.AddOSMDataToProjectCommand());
     logger.trace("Finished initializing OSM Extractor commands.");
 }
 
