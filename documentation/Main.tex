@@ -10,6 +10,7 @@
 \usepackage{tikz} 
 \usepackage[export]{adjustbox}
 \usepackage{float}
+\usepackage{textcomp}
 \usepackage{lipsum}
 \usepackage{todonotes}
 \usepackage[cache=false]{minted}
@@ -34,7 +35,6 @@
 
 \input{Titlepage/Titlepage}
 
-
 \setstretch{1.2} 
 
 \addtotoc{Abstract}
@@ -43,21 +43,10 @@
 	\input{Abstract/Abstract}
 	
 }
-\newpage
-\acknowledgements{
-	\addtocontents{toc}{\vspace{1em}}
-	\input{Acknowledgements/Acknowledgements}
-}
-\newpage
+\pagebreak
 \input{Chapters/ManagementSummary}
 \addtocontents{toc}{\vspace{1em}\protect\setcounter{tocdepth}{1}}
-\newpage
-
-\Declaration{
-	\addtocontents{toc}{\vspace{1em}}
-	\input{Declaration/DeclarationOfOriginality}
-}
-
+\pagebreak
 
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{2}
@@ -68,12 +57,24 @@
 \input{Chapters/Introduction}
 \input{Chapters/Spatial_Data}
 \input{Chapters/OpenRefine}
+\input{Chapters/Architecture_and_Design}
 \input{Chapters/OSM_Extractor}
 \input{Chapters/GeoJSON_Export}
 \input{Chapters/Results}
 
 \listoffigures
-\addtocontents{toc}{\vspace{2em}}
+
+\acknowledgements{
+	\addtocontents{toc}{\vspace{1em}}
+	\input{Acknowledgements/Acknowledgements}
+}
+\pagebreak
+\Declaration{
+	\addtocontents{toc}{\vspace{1em}}
+	\input{Declaration/DeclarationOfOriginality}
+}
+\pagebreak
+\addtocontents{toc}{\vspace{1em}}
 
 \appendix 
 

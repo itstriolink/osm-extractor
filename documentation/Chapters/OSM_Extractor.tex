@@ -5,7 +5,6 @@ is to integrate OpenStreetMap data into a new OpenRefine project.
 The OpenStreetMap data is retrieved by sending an Overpass QL query to the Overpass API which then
 returns the OSM data as XML as response.
 This data then goes through a conversion process which converts the OSM data to Simple Feature geometries.
-
 \section{OpenStreetMap and the Overpass API}
 OpenStreetMap is a free map of the world in which people around the world continuously contribute to.
 The map is freely accessible on the web and any change that is made is automatically owned by the user who changed it.
@@ -59,105 +58,6 @@ node
   (50.7,7.1,50.8,7.25);
 out body;
 \end{minted}
-\section{Architecture \& Design}
-\subsection{Architecture}
-The extension is built using the \href{https://www.java.com/en/}{Java} programming language (Java Platform SE 8),
-which is fully compliant with the OpenRefine development environment.
-The extension is built as a "separate" component from OpenRefine, meaning it has to manually be added/installed to an
-existing OpenRefine application environment.\\
-\newline
-The extension is compiled using \href{https://maven.apache.org/index.html}{Apache Maven} and consists of client-side
-resources such as .html, .css, .less, .js files and of server-side resources i.e. Java classes. These Java classes are
-bundled during the initialization of OpenRefine and can consist of controllers, commands, functions etc. They are invoked
-using HTTP requests such as GET or POST with AJAX. All of the necessary client-side resources and server-side resources must be
-injected to OpenRefine using the \mintinline{java}{init()} function of the extension.\\
-\newline
-When the extension is built, all of the Java classes and the client-side resources are stored in a directory which need to be copied to
-the OpenRefine installation \\extension directory in order for it to be bundled together with the OpenRefine application.\\
-\newline
-An extension of OpenRefine has the following file structure:
-\begin{minted}
-[
-    frame=lines
-]
-{bash}
-pom.xml
-  src/
-      com/foo/bar/... *.java source files
-  module/
-      *.html, *.vt files
-      scripts/... *.js files
-      styles/... *.css and *.less files
-      images/... image files
-      MOD-INF/
-          lib/*.jar files
-          classes/... java class files
-          module.properties
-          controller.js
-\end{minted}
-More information on installing extensions can be found \href{https://docs.openrefine.org/manual/installing#installing-extensions}{here}.
-OpenRefine's official documentation also includes an article on how to write extensions \href{https://docs.openrefine.org/technical-reference/writing-extensions}{here}.\\
-\newline
-\pagebreak
-\subsection{Design Decisions}
-\begin{table}
-    \begin{tabularx}{\textwidth}{| X | X |}
-        \hline
-        \textbf{Decision} & \textbf{Reason}\\[1cm]
-        \hline
-        The \href{https://github.com/topobyte/osm4j}{osm4j} library is used for unmarshalling the OpenStreetMap XML data &
-        The \href{https://github.com/topobyte/osm4j}{osm4j} library provides geometry and utility functions that are
-        useful for processing OpenStreetMap XML data and for querying the Overpass API,
-        turning it out to be a perfect fit for this extension\'s implementation.\\
-        \hline
-        The \href{https://github.com/locationtech/jts}{JTS Topology Suite} library is used to process the geometry objects. &
-        OpenStreetMap data is first converted to \textit{Simple Feature} geometry objects before inserting into OpenRefine (explained later in the document).
-        The \href{https://github.com/locationtech/jts}{JTS Topology Suite} provides useful classes and functions for dealing with such geometry objects (Points, LineStrings, Polygons etc).\\
-        \hline
-        The Well-Known Text (WKT) geometry representation format is used to represent the \textit{Simple Feature} geometry objects. &
-        Any type of \textit{Simple Feature} geometry object can be represented using WKT and it can be stored in a single
-        cell without having any dependencies to another cell or needing more than one cell.\\
-        \hline
-        \mintinline{bash}{Polygons} are not offered as a type of Geometry in the extension. &
-        Extracting Polygons from OpenStreetMap data... It is left to the user to choose what geometries are Polygons and
-        what remain as MultiPolygons TBD\\
-        \hline
-        \mintinline{bash}{out center;} is not supported as an Overpass QL command. &
-        The reason is because the \href{https://github.com/topobyte/osm4j}{osm4j} library is a library to process OpenStreetMap
-        XML data and not precisely data retrieved from the Overpass API (at least not entirely). Since the
-        \mintinline{xml}{<center>} attribute is more Overpass specific, the osm4j repository maintainers did not see it as a necessary
-        fit/addition to their library since it is more oriented towards Overpass and not native OpenStreetMap XML data.
-        Here is also the issue opened in the osm4j repository: \href{https://github.com/topobyte/osm4j/issues/3}{https://github.com/topobyte/osm4j/issues/3}
-        The interior point can be however calculated using the GREL function \mintinline{java}{interiorPoint()} that is added by this extension.
-        It accepts any type of WKT string and returns a Point WKT of the interior point of that geometry.\\
-        \hline
-        \mintinline{sql}{[out:json];} and \mintinline{sql}{[out:csv];} are not supported in the extension. & This extension deals with only OpenStreetMap
-        XML data and not with other types of representations. The \href{https://github.com/topobyte/osm4j}{osm4j} library also does not support reading
-        \textit{JSON} or \textit{CSV} OpenStreetMap data.
-    \end{tabularx}
-\caption{Design Decisions - OSM Extractor}
-\end{table}
-\subsubsection{The Solution Stack}
-This extension was built using the Java programming language, version 8, for the back end. For the front-end portion,
-a combination of Javascript, the jQuery library, LESS and HTML was used. \\
-\newline
-\href{https://www.java.com/en/}{Java} is a powerful general-purpose programming language.
-It is used to develop desktop and mobile applications,
-big data processing, embedded systems, and so on.
-According to Oracle, the company that owns Java, Java runs on 3 billion devices worldwide, which makes Java one of the most popular programming languages. \cite{WhatIsJava}\\
-\newline
-The reason why this plugin was chosen to be built and developed using Java is
-because of OpenRefine, it is programmed using Java,
-so all its extensions must also be written in Java (using OpenRefine\'s extension
-architecture). All of the OpenRefine extensions are developed inside the
-OpenRefine environment as a separate bundled directory and must use OpenRefine\'s
-native Java methods in order to be communicate with OpenRefine\'s core engine.\\
-It is also an Object-Oriented programming language, which runs under any operating system
-(because of its compiler) and uses inheritance and abstract methods (Object Oriented programming principles),
-which turned out to be useful and appropriate for the nature of this extension.\\
-\newline
-
-For the front-end, the usual front-end stack was used to develop the UI parts i.e. Javascript, jQuery, LESS and HTML.
 \pagebreak
 \section{Implementation}
 \subsection{Overview}
@@ -248,7 +148,34 @@ while processing lat/lon values or WKT values. \\
 More information on what a numeric scale is can be found here:
 \href{https://docs.microsoft.com/en-us/sql/t-sql/data-types/precision-scale-and-length-transact-sql?view=sql-server-ver15}{https://docs.microsoft.com/en-us/sql/t-sql/data-types/precision-scale-and-length-transact-sql?view=sql-server-ver15}.
 \subsubsection{Conversion to Simple Features Geometry}\label{sec:conversion-to-simple-features-geometry}
-\lipsum[21-23]
+When the OpenStreetMap XML data is received, it is received as nodes, ways and relations. This extension however, converts such
+elements to \href{https://www.ogc.org/standards/sfa}{Simple Feature Geometry} before inserting it into OpenRefine.\\
+\newline
+In the parsing options, at the bottom, there exist the types of Geometries to include in the project, they are all part of the \textit{Simple Feature} geometry objects:
+\begin{itemize}
+    \item Points (as lat/lon, as delimited text and as WKT)
+    \item LineStrings as WKT
+    \item MultiLineStrings and
+    \item MultiPolygons
+\end{itemize}
+To convert such data into \textit{Simple Feature} geometry, a combination of the \href{https://github.com/topobyte/osm4j}{osm4j}
+(it has some geometry and utility functions essential for the conversion) and
+\href{https://github.com/locationtech/jts}{JTS Topology Suite} (for providing \textit{Simple Feature} geometry classes and functions) library is used.\\
+\newline
+Here's the Java code that e.g. does the conversion of an OSM node to a JTS \mintinline{bash}{Point} Geometry:
+\begin{minted}[breaklines, linenos, tabsize=2]{java}
+    NodeBuilder nodeBuilder = new NodeBuilder();
+    osmExtractor.addPoint(nodeBuilder.build(node), node.getId(), OsmModelUtil.getTagsAsMap(node), node.getMetadata());
+\end{minted}
+This portion of code uses osm4j\textquotesingle s NodeBuilder class to build a JTS Point Geometry. Other parameters are necessary attributes for the Point such as:
+the identifier, its OSM tags and its metadata.\\
+\newline
+Creating \mintinline{bash}{LineStrings}, \mintinline{bash}{MultiLineStrings} and \mintinline{bash}{MultiPolygons} is not
+as straightforward as creating \mintinline{bash}{Points}, hence a combination of methods is used to make such a conversion possible.
+The library of osm4j handles a lot of the logic of those conversions (geometry functions) while the JTS library stores
+them in their appropriate Java classes as Geometry objects. Other Java classes provided by this extension bundle up the JTS geometries along
+with their OSM attributes in a single object. This makes it easy for storing the whole OSM element (and its attributes)
+along with its \textit{Simple Feature} geometry attributes.
 \subsection{Creating the Project in OpenRefine}
 After all the desired tags have been selected and the geometries have been included, the user can choose a
 name for the newOpenRefine project and select the \textit{Create Project} button at the top right of the
@@ -262,7 +189,7 @@ and \textit{longitude} that contain the value of X and Y of the points. Moreover
 another column called \textit{point\_delimited} is added containing latitude/longitude columns, separated with
 the selected separator in the mapping options. Finally, there will be the \textit{WKT} column which contains
 the WKT string for the geometry. All of the values of these extra columns (latitude, longitude, WKT) have the precision scale of the one that was entered in
-the mapping options.\\
+the mapping options. The project\textquotesingle s description also consists of the Overpass QL query that was entered initially.\\
 \newline
 Some of the values have a green color instead of the native black one, this means that the data type of those values is other
 than text i.e.\ number, date or boolean.
@@ -292,13 +219,14 @@ The first line reads the argument that was provided by the user as WKT and conve
 The second line utilizes JTS's \mintinline{java}{getInteriorPoint()} function to compute the interior point of the
 given geometry. The results are then returned back to the user as a WKT string.\\
 \newline
-This function is useful for TBD
-
+This function is useful for Wikidata reconciliation with OpenStreetMap elements (available in OpenRefine).
+This converts OSM Polygons (or any type of Geometry) to Points (with coordinates) since Wikidata only knows coordinates.
 \pagebreak
 \subsection{Testing}
 This extension includes some unit testing. The framework used for unit testing is the \href{https://testng.org/}{TestNG} framework.
 \subsection{Unit Testing}
 TestNG is a testing framework inspired from JUnit and NUnit. It is designed to cover all categories of testing.\\
+\newline
 This extension contains minimal unit testing for some of its important functions and everytime the CI/CD pipeline is run in GitLab, the
 extension's unit tests are executed to see if everything is still working as expected.
 \pagebreak

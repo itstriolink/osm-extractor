@@ -147,12 +147,12 @@
 \examiner    {}
 \degree      {}
 \authors     {}
-\university  {\texorpdfstring{\href{https://www.ost.ch/}
-                {OST – Ostschweizer Fachhochschule}}
-                {OST – Ostschweizer Fachhochschule}}
-\department  {\texorpdfstring{\href{https://www.ost.ch/de/studium/technik/master-of-science-in-engineering-mse/profile/mse-computer-science}
-                {Software and Systems}}
-                {Software and Systems}}
+\university  {\texorpdfstring{\href{https://https://www.ost.ch/en//}
+                {Eastern Switzerland University of Applied Sciences}}
+                {Eastern Switzerland University of Applied Sciences}}
+\department  {\texorpdfstring{\href{https://www.ost.ch/en/education/technical-sciences/master-of-science-in-engineering-mse/profiles/mse-computer-sciencee}
+                {Computer Science}}
+                {Computer Science}}
 \faculty     {\texorpdfstring{\href{https://www.msengineering.ch/en/specializations/information-and-communication-technologies.html}
                 {Information and Communication Technologies}}
                 {Information and Communication Technologies}}
