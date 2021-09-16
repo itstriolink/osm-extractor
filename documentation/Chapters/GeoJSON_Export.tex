@@ -171,15 +171,19 @@ Here is also the code that e.g. converts a Point WKT to a Point Features in GeoJ
 The scale factor corresponds to the numeric scale specified in the export dialog i.e. 10 in the power of the \textit{geometry numeric scale}.\\
 \newline
 At the end of the rows, all the features are added to the \mintinline{bash}{FeatureCollection} object and written to the GeoJSON file.
+\subsection{Robustness and Error Handling}
+Since this extension is an extension of a platform that primarily deals with unstructured/messy data, that data can come in many shapes and forms (thus highly error prone) and therefore the extension needs to be robust and to handle errors gracefully.\\
+\newline
+There needs to be at least a combination of latitude and longitude columns selected on the dialog or a WKT column for the export to work properly. If any of those are selected, the export will finish successfully, otherwise, there is no geometry to export and the export process will fail.
 \subsection{Testing}
 This extension includes some unit testing. The framework used for unit testing is the \href{https://testng.org/}{TestNG} framework.
 \subsection{Unit Testing}
 TestNG is a testing framework inspired from JUnit and NUnit. It is designed to cover all categories of testing.\\
 \newline
-This extension contains minimal unit testing for some of its important functions and everytime the CI/CD pipeline is run in GitLab, the
+This extension contains minimal unit testing for some of its important functions and every time the CI/CD pipeline is run in GitLab, the
 extension's unit tests are executed to see if everything is still working as expected.
 \pagebreak
-\section{Usage \& Examples}
+\section{Usage and Examples}
 \subsection{Usage}
 \begin{enumerate}
     \item Launch OpenRefine with the \textbf{GeoJSON Export} extension

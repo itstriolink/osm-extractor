@@ -1,4 +1,4 @@
-\documentclass[a4paper, 12pt, oneside]{Main}
+\documentclass[a4paper, 11pt, oneside]{Main}
 \renewcommand{\familydefault}{\sfdefault} 
 \usepackage{helvet}
 
@@ -15,9 +15,11 @@
 \usepackage{todonotes}
 \usepackage[cache=false]{minted}
 \PassOptionsToPackage{hyphens}{url}
+\usepackage{hyperref}
 \usepackage{url}
 \usepackage{xcolor}
 \usepackage{tabularx}
+\usepackage{breakurl}
 
 \definecolor{shadecolor}{RGB}{180, 180, 180}
 
@@ -31,6 +33,7 @@
 \fancyhead[R]{\thepage}
 
 \begin{document}
+\sloppy
 \frontmatter  
 
 \input{Titlepage/Titlepage}
@@ -43,10 +46,8 @@
 	\input{Abstract/Abstract}
 	
 }
-\pagebreak
 \input{Chapters/ManagementSummary}
 \addtocontents{toc}{\vspace{1em}\protect\setcounter{tocdepth}{1}}
-\pagebreak
 
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{2}
@@ -60,6 +61,7 @@
 \input{Chapters/Architecture_and_Design}
 \input{Chapters/OSM_Extractor}
 \input{Chapters/GeoJSON_Export}
+\input{Chapters/The_OpenRefine_Worksheet}
 \input{Chapters/Results}
 
 \listoffigures
@@ -84,6 +86,7 @@
 \input{Appendices/Testing}
 \input{Appendices/Project_Management}
 \input{Appendices/Coding_Statistics}
+\input{Appendices/The_OpenRefine_Worksheet}
 
 \backmatter
 

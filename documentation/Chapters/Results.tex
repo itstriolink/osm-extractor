@@ -1,4 +1,4 @@
-\chapter{Results \& Conclusion}\label{ch:results-&-conclusion}
+\chapter{Results and Conclusion}\label{ch:results-&-conclusion}
 \section{Achievements and Results}
 The main goals of this thesis have been met. Both of the extensions incorporate/integrate spatial data representations into OpenRefine and also integrate OpenStreetMap data into OpenRefine.
 \subsection{OSM Extractor Results}
@@ -83,7 +83,7 @@ Exporting OpenRefine data to the GeoJSON (.geojson) format:
 \end{minted}
 Exported GeoJSON file containing geometries such as a \mintinline{bash}{Point}, a \mintinline{bash}{LineString}  and a \mintinline{bash}{MultiPolygon}.
 \pagebreak
-\section{Reflection \& Conclusion}
+\section{Reflection and Conclusion}
 Working with the OpenRefine application was a great experience for me. Their extension architecture is simple and efficient to understand and use.
 Since OpenRefine is an open-source project, working with it also improved my ability to work in an open-source project
 and know the approaches that are used by developers when developing open-source projects.\\
@@ -97,7 +97,7 @@ research needed to be done before making decisions on the extensions. This made 
 Finally, this thesis would have been much harder to implement if libraries like the ones that were used in this project didn\textquotesingle t exist. The work and effort
 that would need to be put in implementing the extensions would expand and it would definitely question the feasibility of such a project.
 \section{Outlook}
-Contributions to the OpenRefine core project are also in the scope.
+Contributions to the OpenRefine core project are also in the scope. One of the items discussed with the OpenRefine Dev Community is collaborating with them to continue implementing a feature that allow users to add descriptions and different custom metadata to their OpenRefine project\textquotesingle s columns. These works would go directly into the core OpenRefine project. The discussion can be viewed here: \href{https://groups.google.com/g/openrefine-dev/c/xWoWiAA6KhQ}{https://groups.google.com/g/openrefine-dev/c/xWoWiAA6KhQ}
 \subsection{The OSM Extractor Extension}
 The current version of the \textbf{OSM Extractor} extension successfully utilizes the Overpass API to integrate OpenStreetMap data into a new OpenRefine project. Future versions of OSM Extractor could save the Overpass query, similar to a saved database connection (connection string). Or it could allow synchronization to keep an OpenRefine
 project up-to-date with OSM. The user would need a \textit{Sync} button on the OpenRefine project which would sync the current data with the latest updates/additions on the OpenStreetMap database. All the records would need to have their unique identifier stored, in order to know if they were updated or if new OpenStreetMap elements were added in OpenStreetMap. This feature would need a \textit{Sync} button somewhere on the project
