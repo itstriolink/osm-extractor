@@ -58,5 +58,7 @@ release:
           url: 'https://gitlab.com/labiangashi/osm-extractor/-/jobs/artifacts/$CI_COMMIT_TAG/raw/target/osm-extractor-$CI_COMMIT_TAG.zip?job=build'
         - name: 'osm-extractor-$CI_COMMIT_TAG.tgz'
           url: 'https://gitlab.com/labiangashi/osm-extractor/-/jobs/artifacts/$CI_COMMIT_TAG/raw/target/osm-extractor-$CI_COMMIT_TAG.tgz?job=build'
+        - name: 'Documentation.pdf'
+          url: 'https://gitlab.com/labiangashi/osm-extractor/-/jobs/artifacts/$CI_COMMIT_TAG/raw/documentation/Main.pdf?job=build'
 
 
