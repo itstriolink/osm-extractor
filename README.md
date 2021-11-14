@@ -2,7 +2,7 @@
 
 Description
 ------
-OpenRefine extension that allows you to import OpenStreetMap data into OpenRefine using the Overpass API
+OpenRefine extension that allows you to import OpenStreetMap data into OpenRefine using the Overpass API.
 
 Installation
 ------
@@ -22,6 +22,6 @@ Usage
 Author
 ------
 
-Extension is written by [Labian Gashi](https://gitlab.com/labiangashi)
+Extension is written by [Labian Gashi](https://gitlab.com/labiangashi).
 
-Feedback is welcome
+Feedback is welcome.
